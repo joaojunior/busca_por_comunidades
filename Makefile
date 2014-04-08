@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = repeated_squaring_unittest graph_unittest
+TESTS = repeated_squaring_unittest graph_unittest search_community_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -53,9 +53,13 @@ run_repeated_squaring_tests: repeated_squaring_unittest
 run_graph_tests: graph_unittest
 	./graph_unittest
 	
+run_search_community_tests: search_community_unittest
+	./search_community_unittest
+	
 run_tests: $(TESTS)
 	./repeated_squaring_unittest
 	./graph_unittest
+	./search_community_unittest
 
 # Builds gtest.a and gtest_main.a.
 
@@ -88,8 +92,14 @@ gtest_main.a : gtest-all.o gtest_main.o
 graph.o : $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c
 
+queue.o : $(DATA_STRUCTURE_DIR)/queue/queue.c $(DATA_STRUCTURE_DIR)/queue/queue.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/queue/queue.c
+	
 repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c
+	
+search_community.o : search_community.c search_community.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c search_community.c
 	
 repeated_squaring_unittest.o : $(TESTS_DIR)/repeated_squaring_unittest.cc \
                      $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
@@ -103,4 +113,11 @@ graph_unittest.o : $(TESTS_DIR)/graph_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/graph_unittest.cc
 
 graph_unittest : graph.o graph_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
+                     search_community.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_unittest.cc
+
+search_community_unittest : graph.o repeated_squaring.o search_community.o search_community_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
