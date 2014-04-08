@@ -20,3 +20,17 @@ void calculate_quantity_shortest_path_in_edge(int **predecessor,int **quantity_s
         quantity_shortest_path_in_edge[predecessor[i][j]][j] += 1;
     }
 };
+
+Arc *get_arc_with_bigger_weight(int **quantity_shortest_path_in_edge, int numbers_nodes){
+    Arc *arc;
+    int max_weight = 0;
+    arc = (Arc *)malloc(sizeof(Arc));
+    for(int i = 0; i < numbers_nodes; i++)
+        for(int j = 0; j < numbers_nodes; j++)
+            if(quantity_shortest_path_in_edge[i][j] > max_weight){
+                max_weight = quantity_shortest_path_in_edge[i][j];
+                arc->source = i;
+                arc->dest = j;
+            }
+    return arc;
+};
