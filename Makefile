@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = repeated_squaring_unittest graph_unittest search_community_unittest
+TESTS = run_graph_tests run_repeated_squaring_tests run_floyd_warshall_tests run_search_community_tests search_community_with_floydwarshall_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -47,19 +47,22 @@ all : $(TESTS)
 clean :
 	rm -f $(TESTS) gtest.a gtest_main.a *.o
 
-run_repeated_squaring_tests: repeated_squaring_unittest
-	./repeated_squaring_unittest
-
 run_graph_tests: graph_unittest
 	./graph_unittest
 	
+run_repeated_squaring_tests: repeated_squaring_unittest
+	./repeated_squaring_unittest
+
+run_floyd_warshall_tests: floyd_warshall_unittest
+	./floyd_warshall_unittest
+	
 run_search_community_tests: search_community_unittest
 	./search_community_unittest
+
+search_community_with_floydwarshall_tests: search_community_with_floydwarshall_unittest
+	./search_community_with_floydwarshall_unittest
 	
 run_tests: $(TESTS)
-	./repeated_squaring_unittest
-	./graph_unittest
-	./search_community_unittest
 
 # Builds gtest.a and gtest_main.a.
 
@@ -89,17 +92,27 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-graph.o : $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c
-
 main.o : main.c main.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c main.c
+
+graph.o : $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c
 	
 repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c
+
+floyd_warshall.o : $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c
 	
 search_community.o : search_community.c search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c search_community.c
+	
+graph_unittest.o : $(TESTS_DIR)/graph_unittest.cc \
+                     $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/graph_unittest.cc
+
+graph_unittest : graph.o graph_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 	
 repeated_squaring_unittest.o : $(TESTS_DIR)/repeated_squaring_unittest.cc \
                      $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
@@ -108,11 +121,11 @@ repeated_squaring_unittest.o : $(TESTS_DIR)/repeated_squaring_unittest.cc \
 repeated_squaring_unittest : graph.o repeated_squaring.o repeated_squaring_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
-graph_unittest.o : $(TESTS_DIR)/graph_unittest.cc \
-                     $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/graph_unittest.cc
+floyd_warshall_unittest.o : $(TESTS_DIR)/floyd_warshall_unittest.cc \
+                     $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/floyd_warshall_unittest.cc
 
-graph_unittest : graph.o graph_unittest.o gtest_main.a
+floyd_warshall_unittest : graph.o floyd_warshall.o floyd_warshall_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
@@ -120,4 +133,11 @@ search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_unittest.cc
 
 search_community_unittest : graph.o repeated_squaring.o main.o search_community.o search_community_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+search_community_with_floydwarshall_unittest.o : $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc \
+                     search_community.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc
+	
+search_community_with_floydwarshall_unittest : graph.o floyd_warshall.o search_community.o search_community_with_floydwarshall_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

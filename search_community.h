@@ -1,7 +1,7 @@
 #ifndef SEARCH_COMMUNITY_H
 #define SEARCH_COMMUNITY_H
-#include "data_structure/grafo_matriz_adjacencia/graph.h" 
-#include "algorithms/RepeatedSquaring/repeated_squaring.h"
+#include "data_structure/grafo_matriz_adjacencia/graph.h"
+#define PREDECESSOR_NULL -1
 #define COMMUNITY_EMPTY -1
 typedef struct{
     int source = -1;
