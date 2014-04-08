@@ -118,6 +118,42 @@ TEST(SearchComunityTest, GetArcWithBiggerWeight2){
     ASSERT_EQ(arc->dest, 3);    
 }
 
+TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfterRemoveEdge){
+    Graph graph;
+    RepeatedSquaringResult *repeated_squaring_result, *a;
+    int **quantity_shortest_path_in_edge;
+    Arc *arc;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    repeated_squaring_result = repeated_squaring(&graph);
+    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(repeated_squaring_result->predecessor, graph.numbers_nodes);
+    arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph.numbers_nodes);
+    remove_edge(&graph, arc->source, arc->dest);
+    a = repeated_squaring(&graph);
+    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(a->predecessor, graph.numbers_nodes);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[0][0]);
+    //ASSERT_EQ(1,quantity_shortest_path_in_edge[0][1]);
+    //ASSERT_EQ(1,quantity_shortest_path_in_edge[0][2]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[0][3]);
+    //ASSERT_EQ(1,quantity_shortest_path_in_edge[1][0]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[1][1]);
+    //ASSERT_EQ(1,quantity_shortest_path_in_edge[1][2]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[1][3]);
+    //ASSERT_EQ(1,quantity_shortest_path_in_edge[2][0]);
+    //ASSERT_EQ(1,quantity_shortest_path_in_edge[2][1]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[2][2]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[2][3]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[3][0]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[3][1]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[3][2]);
+    //ASSERT_EQ(0,quantity_shortest_path_in_edge[3][3]);
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
