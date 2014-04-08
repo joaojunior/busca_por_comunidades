@@ -161,6 +161,7 @@ TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfter
     Graph graph;
     RepeatedSquaringResult *repeated_squaring_result;
     int **quantity_shortest_path_in_edge;
+    Arc *arc;
     graph.numbers_nodes = 5;
     allocate_memory(&graph);
     insert_arc(&graph, 0, 1, 3);
@@ -200,12 +201,16 @@ TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfter
     ASSERT_EQ(0,quantity_shortest_path_in_edge[4][2]);
     ASSERT_EQ(7,quantity_shortest_path_in_edge[4][3]);
     ASSERT_EQ(0,quantity_shortest_path_in_edge[4][4]);
+    arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph.numbers_nodes);
+    ASSERT_EQ(arc->source, 0);
+    ASSERT_EQ(arc->dest, 4);
 }
 
 TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfterRemoveArcWithShortestPath){
     Graph graph;
     RepeatedSquaringResult *repeated_squaring_result;
     int **quantity_shortest_path_in_edge;
+    Arc *arc;
     graph.numbers_nodes = 5;
     allocate_memory(&graph);
     insert_arc(&graph, 0, 1, 3);
@@ -245,6 +250,9 @@ TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfter
     ASSERT_EQ(0,quantity_shortest_path_in_edge[4][2]);
     ASSERT_EQ(6,quantity_shortest_path_in_edge[4][3]);
     ASSERT_EQ(0,quantity_shortest_path_in_edge[4][4]);
+    arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph.numbers_nodes);
+    ASSERT_EQ(arc->source, 3);
+    ASSERT_EQ(arc->dest, 0);
 }
 
 int main(int argc, char **argv) {
