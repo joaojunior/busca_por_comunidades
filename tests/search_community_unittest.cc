@@ -1,3 +1,4 @@
+#include "../main.h"
 #include "../search_community.h"
 #include <gtest/gtest.h>
  
@@ -273,7 +274,90 @@ TEST(SearchComunityTest, CalculateCommunities){
     ASSERT_EQ(1, communities2nodes[2]);
     ASSERT_EQ(1, communities2nodes[3]);
     ASSERT_EQ(1, get_max_community(communities2nodes, graph.numbers_nodes));
-    
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWithGraphNotConnected){
+    Graph graph;
+    RepeatedSquaringResult *repeated_squaring_result;
+    int **quantity_shortest_path_in_edge;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    repeated_squaring_result = repeated_squaring(&graph);
+    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(repeated_squaring_result->predecessor, graph.numbers_nodes);
+    communities2nodes = calculate_communities(repeated_squaring_result->distance, graph.numbers_nodes);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(1, communities2nodes[1]);
+    ASSERT_EQ(1, communities2nodes[2]);
+    ASSERT_EQ(2, communities2nodes[3]);
+    ASSERT_EQ(2, get_max_community(communities2nodes, graph.numbers_nodes));
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWithRepeatedSquareWith1Community){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_repeated_square(&graph, 1);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(1, communities2nodes[1]);
+    ASSERT_EQ(1, communities2nodes[2]);
+    ASSERT_EQ(1, communities2nodes[3]);
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWithRepeatedSquareWith2Communities){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_repeated_square(&graph, 2);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(1, communities2nodes[1]);
+    ASSERT_EQ(1, communities2nodes[2]);
+    ASSERT_EQ(2, communities2nodes[3]);
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWithRepeatedSquareWith3Communities){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_repeated_square(&graph, 3);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(2, communities2nodes[1]);
+    ASSERT_EQ(2, communities2nodes[2]);
+    ASSERT_EQ(3, communities2nodes[3]);
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWithRepeatedSquareWith4Communities){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_repeated_square(&graph, 4);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(2, communities2nodes[1]);
+    ASSERT_EQ(3, communities2nodes[2]);
+    ASSERT_EQ(4, communities2nodes[3]);
 }
 
 int main(int argc, char **argv) {

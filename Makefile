@@ -92,8 +92,8 @@ gtest_main.a : gtest-all.o gtest_main.o
 graph.o : $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/grafo_matriz_adjacencia/graph.c
 
-queue.o : $(DATA_STRUCTURE_DIR)/queue/queue.c $(DATA_STRUCTURE_DIR)/queue/queue.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/queue/queue.c
+main.o : main.c main.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c main.c
 	
 repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c
@@ -119,5 +119,5 @@ search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_unittest.cc
 
-search_community_unittest : graph.o repeated_squaring.o search_community.o search_community_unittest.o gtest_main.a
+search_community_unittest : graph.o repeated_squaring.o main.o search_community.o search_community_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
