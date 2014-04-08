@@ -127,7 +127,6 @@ TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfter
     allocate_memory(&graph);
     insert_edge(&graph, 0, 1, 1);
     insert_edge(&graph, 0, 2, 1);
-    insert_edge(&graph, 0, 2, 1);
     insert_edge(&graph, 1, 2, 1);
     insert_edge(&graph, 2, 3, 1);
     repeated_squaring_result = repeated_squaring(&graph);
@@ -253,6 +252,28 @@ TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfter
     arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph.numbers_nodes);
     ASSERT_EQ(arc->source, 3);
     ASSERT_EQ(arc->dest, 0);
+}
+
+TEST(SearchComunityTest, CalculateCommunities){
+    Graph graph;
+    RepeatedSquaringResult *repeated_squaring_result;
+    int **quantity_shortest_path_in_edge;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    repeated_squaring_result = repeated_squaring(&graph);
+    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(repeated_squaring_result->predecessor, graph.numbers_nodes);
+    communities2nodes = calculate_communities(repeated_squaring_result->distance, graph.numbers_nodes);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(1, communities2nodes[1]);
+    ASSERT_EQ(1, communities2nodes[2]);
+    ASSERT_EQ(1, communities2nodes[3]);
+    ASSERT_EQ(1, get_max_community(communities2nodes, graph.numbers_nodes));
+    
 }
 
 int main(int argc, char **argv) {

@@ -34,3 +34,31 @@ Arc *get_arc_with_bigger_weight(int **quantity_shortest_path_in_edge, int number
             }
     return arc;
 };
+
+int *calculate_communities(int **distance, int numbers_nodes){
+    int *communities2nodes;
+    int community, next_community;
+    communities2nodes = (int *)malloc(numbers_nodes * sizeof(int));
+    for(int i = 0; i < numbers_nodes; i++)
+        communities2nodes[i] = COMMUNITY_EMPTY;
+    community = 1;
+    for(int i = 0; i < numbers_nodes; i++){
+        next_community = community;
+        for(int j = i; j < numbers_nodes; j++){
+            if(distance[i][j] == MAX_WEIGHT)
+                next_community = community + 1;
+            else if(communities2nodes[j] == COMMUNITY_EMPTY)
+                communities2nodes[j] = community;
+        }
+        community = next_community;
+    }
+    return communities2nodes;
+};
+
+int get_max_community(int *communities2nodes, int numbers_nodes){
+    int max_community = 0;
+    for(int i = 0; i < numbers_nodes; i++)
+        if(communities2nodes[i] > max_community)
+            max_community = communities2nodes[i];
+    return max_community;
+};
