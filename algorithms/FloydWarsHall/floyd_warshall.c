@@ -1,8 +1,8 @@
 #include "floyd_warshall.h"
 ResultFloydWarshall *floyd_warshall(Graph *graph){
     ResultFloydWarshall *result_floyd_warshall;
-    result_floyd_warshall = allocate_memory(graph->numbers_nodes);
-    initialize(result_floyd_warshall, graph);
+    result_floyd_warshall = allocate_memory_result_floyd_warshall(graph->numbers_nodes);
+    initialize_floyd_warshall(result_floyd_warshall, graph);
     for(int k = 0; k < graph->numbers_nodes; k++)
         for(int i = 0; i < graph->numbers_nodes; i++)
             for(int j = 0; j < graph->numbers_nodes; j++)
@@ -14,7 +14,7 @@ ResultFloydWarshall *floyd_warshall(Graph *graph){
     return result_floyd_warshall;
 };
 
-ResultFloydWarshall *allocate_memory(int numbers_nodes){
+ResultFloydWarshall *allocate_memory_result_floyd_warshall(int numbers_nodes){
     ResultFloydWarshall *result_floyd_warshall;
     result_floyd_warshall = (ResultFloydWarshall *)malloc(sizeof(ResultFloydWarshall));
     result_floyd_warshall->distance = (int **)malloc(numbers_nodes * sizeof(int *));
@@ -26,7 +26,7 @@ ResultFloydWarshall *allocate_memory(int numbers_nodes){
     return result_floyd_warshall;
 };
 
-void initialize(ResultFloydWarshall *result_floyd_warshall, Graph *graph){
+void initialize_floyd_warshall(ResultFloydWarshall *result_floyd_warshall, Graph *graph){
     for(int i = 0; i < graph->numbers_nodes; i++)
         for(int j = 0; j < graph->numbers_nodes; j++){
             if(i == j)

@@ -45,7 +45,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 all : $(TESTS)
 
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+	rm -f $(TESTS) gtest.a gtest_main.a *.o *_unittest
 
 run_graph_tests: graph_unittest
 	./graph_unittest
@@ -61,7 +61,8 @@ run_search_community_tests: search_community_unittest
 
 search_community_with_floydwarshall_tests: search_community_with_floydwarshall_unittest
 	./search_community_with_floydwarshall_unittest
-	
+
+a : main
 run_tests: $(TESTS)
 
 # Builds gtest.a and gtest_main.a.
@@ -132,12 +133,12 @@ search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_unittest.cc
 
-search_community_unittest : graph.o repeated_squaring.o main.o search_community.o search_community_unittest.o gtest_main.a
+search_community_unittest : graph.o repeated_squaring.o floyd_warshall.o main.o search_community.o search_community_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_with_floydwarshall_unittest.o : $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc
 	
-search_community_with_floydwarshall_unittest : graph.o floyd_warshall.o search_community.o search_community_with_floydwarshall_unittest.o gtest_main.a
+search_community_with_floydwarshall_unittest : graph.o repeated_squaring.o floyd_warshall.o search_community.o main.o search_community_with_floydwarshall_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
