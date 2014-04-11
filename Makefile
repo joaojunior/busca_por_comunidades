@@ -55,7 +55,10 @@ run_heap_min_tests: heap_min_unittest
 
 run_min_priority_queue_unittest: min_priority_queue_unittest
 	./min_priority_queue_unittest
-	
+
+run_queue_tests: queue_unittest
+	./queue_unittest
+
 run_dijkstra_queue_unittest: dijkstra_queue_unittest
 	./dijkstra_queue_unittest
 
@@ -131,6 +134,9 @@ heap_min.o : $(DATA_STRUCTURE_DIR)/HeapMin/heap_min.c $(DATA_STRUCTURE_DIR)/Heap
 min_priority_queue.o : $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue.c $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue.c
 
+queue.o : $(DATA_STRUCTURE_DIR)/Queue/queue.c $(DATA_STRUCTURE_DIR)/Queue/queue.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/Queue/queue.c
+
 dijkstra_queue.o : $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.c $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.c -o dijkstra_queue.o
 	
@@ -174,6 +180,13 @@ min_priority_queue_unittest.o : $(TESTS_DIR)/min_priority_queue_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/min_priority_queue_unittest.cc
 
 min_priority_queue_unittest : graph.o heap_min.o min_priority_queue.o min_priority_queue_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+queue_unittest.o : $(TESTS_DIR)/queue_unittest.cc \
+                     $(DATA_STRUCTURE_DIR)/Queue/queue.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/queue_unittest.cc
+
+queue_unittest : queue.o queue_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 dijkstra_queue_unittest.o : $(TESTS_DIR)/dijkstra_queue_unittest.cc \
