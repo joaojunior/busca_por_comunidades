@@ -55,6 +55,11 @@ run_repeated_squaring_tests: repeated_squaring_unittest
 
 run_floyd_warshall_tests: floyd_warshall_unittest
 	./floyd_warshall_unittest
+
+run_bellman_ford_tests: bellman_ford_unittest
+	./bellman_ford_unittest
+
+run_johnson_tests: johnson.o
 	
 run_search_community_tests: search_community_unittest
 	./search_community_unittest
@@ -104,6 +109,12 @@ repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(AL
 
 floyd_warshall.o : $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c
+
+bellman_ford.o : $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c
+
+johnson.o : $(ALGORITHM_DIR)/JohnsonWithMinPriorityQueue/johnson.c $(ALGORITHM_DIR)/JohnsonWithMinPriorityQueue/johnson.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/JohnsonWithMinPriorityQueue/johnson.c
 	
 search_community.o : search_community.c search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c search_community.c
@@ -127,6 +138,13 @@ floyd_warshall_unittest.o : $(TESTS_DIR)/floyd_warshall_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/floyd_warshall_unittest.cc
 
 floyd_warshall_unittest : graph.o floyd_warshall.o floyd_warshall_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+	
+bellman_ford_unittest.o : $(TESTS_DIR)/bellman_ford_unittest.cc \
+                     $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/bellman_ford_unittest.cc
+
+bellman_ford_unittest : graph.o bellman_ford.o bellman_ford_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
