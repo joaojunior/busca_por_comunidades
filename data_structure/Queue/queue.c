@@ -7,8 +7,8 @@ bool empty(Queue *queue){
 };
 
 void enqueue(Queue *queue, int id){
-    Cell *cell;
-    cell = (Cell *)malloc(sizeof(Cell));
+    CellQueue *cell;
+    cell = (CellQueue *)malloc(sizeof(CellQueue));
     cell->id = id;
     cell->prox = NULL;
     if(empty(queue)){
@@ -21,7 +21,7 @@ void enqueue(Queue *queue, int id){
 };
 
 int dequeue(Queue *queue){
-    Cell *result;
+    CellQueue *result;
     result = queue->first;
     int id_result = -1;
     if(queue->first == queue->last){

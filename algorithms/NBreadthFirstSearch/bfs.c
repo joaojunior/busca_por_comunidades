@@ -11,6 +11,7 @@ BFSResult *bfs(Graph *graph, int source){
     bfs_result->predecessor = (int *)malloc(graph->numbers_nodes * sizeof(int));
     for(int i = 0; i < graph->numbers_nodes; i++){
         colors[i] = WHITE;
+        bfs_result->distance[i] = MAX_WEIGHT;
         bfs_result->predecessor[i] = PREDECESSOR_NULL;
     };
     bfs_result->distance[source] = 0;

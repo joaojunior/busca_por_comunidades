@@ -15,6 +15,10 @@ int *calculate_communities_johnson_array(Graph *graph, int quantity_communities)
     return calculate_communities(graph, quantity_communities, &johnson_array);
 };
 
+int *calculate_communities_nbfs(Graph *graph, int quantity_communities){
+    return calculate_communities(graph, quantity_communities, &nbfs);
+};
+
 int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquaringResult *(*func)(Graph *graph)){
     ResultShortestPath *shortest_path_result;
     int **quantity_shortest_path_in_edge;

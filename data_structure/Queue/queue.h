@@ -5,10 +5,10 @@
 typedef struct cell{
     int id;
     struct cell *prox=NULL;
-} Cell;
+} CellQueue;
 typedef struct{
-    Cell *first=NULL;
-    Cell *last=NULL;
+    CellQueue *first=NULL;
+    CellQueue *last=NULL;
 } Queue;
 bool empty(Queue *);
 void enqueue(Queue *, int);
