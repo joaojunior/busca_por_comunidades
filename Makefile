@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = run_graph_tests run_repeated_squaring_tests run_floyd_warshall_tests run_search_community_tests search_community_with_floydwarshall_tests
+TESTS = run_graph_tests run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_search_community_tests search_community_with_floydwarshall_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
