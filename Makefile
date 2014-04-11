@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_search_community_tests search_community_with_floydwarshall_tests
+TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_search_community_tests search_community_with_floydwarshall_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -55,6 +55,9 @@ run_heap_min_tests: heap_min_unittest
 
 run_min_priority_queue_unittest: min_priority_queue_unittest
 	./min_priority_queue_unittest
+	
+run_dijkstra_queue_unittest: dijkstra_queue_unittest
+	./dijkstra_queue_unittest
 
 run_repeated_squaring_tests: repeated_squaring_unittest
 	./repeated_squaring_unittest
@@ -116,6 +119,9 @@ heap_min.o : $(DATA_STRUCTURE_DIR)/HeapMin/heap_min.c $(DATA_STRUCTURE_DIR)/Heap
 min_priority_queue.o : $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue.c $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue.c
 
+dijkstra_queue.o : $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.c $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.c -o dijkstra_queue.o
+	
 repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c
 
@@ -150,6 +156,13 @@ min_priority_queue_unittest.o : $(TESTS_DIR)/min_priority_queue_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/min_priority_queue_unittest.cc
 
 min_priority_queue_unittest : graph.o heap_min.o min_priority_queue.o min_priority_queue_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+dijkstra_queue_unittest.o : $(TESTS_DIR)/dijkstra_queue_unittest.cc \
+                     $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/dijkstra_queue_unittest.cc
+
+dijkstra_queue_unittest : graph.o heap_min.o min_priority_queue.o dijkstra_queue.o dijkstra_queue_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 repeated_squaring_unittest.o : $(TESTS_DIR)/repeated_squaring_unittest.cc \
