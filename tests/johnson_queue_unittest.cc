@@ -45,7 +45,7 @@ TEST(JonhsonTest, ExampleCormen){
     insert_arc(&graph, 3, 0, 2);
     insert_arc(&graph, 3, 2, -5);
     insert_arc(&graph, 4, 3, 6);
-    jonhson_result = jonhson(&graph);
+    jonhson_result = johnson_queue(&graph);
     ASSERT_EQ(0, jonhson_result->distance[0][0]);
     ASSERT_EQ(1, jonhson_result->distance[0][1]);
     ASSERT_EQ(-3, jonhson_result->distance[0][2]);

@@ -1,7 +1,7 @@
 #include "bellman_ford.h"
 BellmanFordResult *bellmanFord(Graph *graph, int source){
     BellmanFordResult *bellman_ford_result;
-    bellman_ford_result = allocate_memory(graph->numbers_nodes);
+    bellman_ford_result = allocate_memory_bellman_ford(graph->numbers_nodes);
     initialize(bellman_ford_result, graph->numbers_nodes, source);
     for(int quantity = 1; quantity <= graph->numbers_nodes - 1; quantity++)
         for(int i = 0; i < graph->numbers_nodes; i++)
@@ -11,7 +11,7 @@ BellmanFordResult *bellmanFord(Graph *graph, int source){
     return bellman_ford_result;
 }; 
 
-BellmanFordResult *allocate_memory(int numbers_nodes){
+BellmanFordResult *allocate_memory_bellman_ford(int numbers_nodes){
     BellmanFordResult *bellman_ford_result;
     bellman_ford_result = (BellmanFordResult *)malloc(sizeof(BellmanFordResult));
     bellman_ford_result->distance = (int *)malloc(sizeof(int) * numbers_nodes);

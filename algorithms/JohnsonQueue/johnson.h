@@ -3,13 +3,11 @@
 #include "../../data_structure/grafo_matriz_adjacencia/graph.h"
 #include "../Bellman-Ford/bellman_ford.h"
 #include "../DijkstraWithMinPriorityQueue/dijkstra.h"
+#include "../../constant.h"
 #define PREDECESSOR_NULL -1
-typedef struct{
-    int **distance;
-    int **predecessor;
-} JohnsonResult;
+#define JohnsonResult ResultShortestPath
 
-JohnsonResult* jonhson(Graph *);
+JohnsonResult* johnson_queue(Graph *);
 BellmanFordResult* reconsider_graph(Graph *);
 void create_graph_reconsidered(Graph *,Graph *);
 #endif

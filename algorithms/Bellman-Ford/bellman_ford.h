@@ -10,7 +10,7 @@ typedef struct bell{
 } BellmanFordResult;
 
 BellmanFordResult *bellmanFord(Graph*, int);
-BellmanFordResult *allocate_memory(int);
+BellmanFordResult *allocate_memory_bellman_ford(int);
 void initialize(BellmanFordResult *, int, int);
 void relax(BellmanFordResult *, Graph*, int, int);
 void verify_negative_cycle(BellmanFordResult *, Graph *);

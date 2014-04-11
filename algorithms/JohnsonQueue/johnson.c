@@ -1,5 +1,5 @@
 #include "johnson.h"
-JohnsonResult* jonhson(Graph *graph){
+JohnsonResult* johnson_queue(Graph *graph){
     JohnsonResult *jonhson_result;
     BellmanFordResult *bellman_ford_result;
     DijkstraResult* dijkstra_result;

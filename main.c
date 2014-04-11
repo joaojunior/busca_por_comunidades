@@ -7,6 +7,10 @@ int *calculate_communities_floyd_warshall(Graph *graph, int quantity_communities
     return calculate_communities(graph, quantity_communities, &floyd_warshall);
 };
 
+int *calculate_communities_johnson_queue(Graph *graph, int quantity_communities){
+    return calculate_communities(graph, quantity_communities, &johnson_queue);
+};
+
 int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquaringResult *(*func)(Graph *graph)){
     ResultShortestPath *shortest_path_result;
     int **quantity_shortest_path_in_edge;
