@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_dijkstra_array_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_johnson_queue_tests run_search_community_tests search_community_with_floydwarshall_tests run_search_community_with_johnson_queue_tests
+TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_dijkstra_array_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_johnson_queue_tests run_johnson_array_tests run_search_community_tests search_community_with_floydwarshall_tests run_search_community_with_johnson_queue_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -70,6 +70,9 @@ run_floyd_warshall_tests: floyd_warshall_unittest
 	
 run_johnson_queue_tests: johnson_queue_unittest
 	./johnson_queue_unittest
+
+run_johnson_array_tests: johnson_array_unittest
+	./johnson_array_unittest
 
 run_bellman_ford_tests: bellman_ford_unittest
 	./bellman_ford_unittest
@@ -143,6 +146,9 @@ floyd_warshall.o : $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c $(ALGORITHM_D
 johnson_queue.o : $(ALGORITHM_DIR)/JohnsonQueue/johnson.c $(ALGORITHM_DIR)/JohnsonQueue/johnson.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/JohnsonQueue/johnson.c -o johnson_queue.o
 
+johnson_array.o : $(ALGORITHM_DIR)/JohnsonArray/johnson.c $(ALGORITHM_DIR)/JohnsonArray/johnson.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/JohnsonArray/johnson.c -o johnson_array.o
+
 search_community.o : search_community.c search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c search_community.c
 
@@ -186,6 +192,13 @@ johnson_queue_unittest.o : $(TESTS_DIR)/johnson_queue_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/johnson_queue_unittest.cc
 
 johnson_queue_unittest : graph.o heap_min.o min_priority_queue.o bellman_ford.o dijkstra_queue.o johnson_queue.o johnson_queue_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+johnson_array_unittest.o : $(TESTS_DIR)/johnson_array_unittest.cc \
+                     $(ALGORITHM_DIR)/JohnsonArray/johnson.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/johnson_array_unittest.cc
+
+johnson_array_unittest : graph.o heap_min.o min_priority_queue.o bellman_ford.o dijkstra_array.o johnson_array.o johnson_array_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 repeated_squaring_unittest.o : $(TESTS_DIR)/repeated_squaring_unittest.cc \
