@@ -29,11 +29,11 @@ TESTS_DIR = tests
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_dijkstra_array_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_johnson_queue_tests run_johnson_array_tests run_search_community_tests search_community_with_floydwarshall_tests run_search_community_with_johnson_queue_tests
+TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_dijkstra_array_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_johnson_queue_tests run_johnson_array_tests run_search_community_tests search_community_with_floydwarshall_tests run_search_community_with_johnson_queue_tests run_search_community_with_johnson_array_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -85,6 +85,9 @@ search_community_with_floydwarshall_tests: search_community_with_floydwarshall_u
 	
 run_search_community_with_johnson_queue_tests: search_community_with_johnson_queue_unittest
 	./search_community_with_johnson_queue_unittest
+
+run_search_community_with_johnson_array_tests: search_community_with_johnson_array_unittest
+	./search_community_with_johnson_array_unittest
 
 run_tests: $(TESTS)
 
@@ -226,19 +229,26 @@ search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_unittest.cc
 
-search_community_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o search_community.o main.o search_community_unittest.o gtest_main.a
+search_community_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o search_community.o main.o search_community_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_with_floydwarshall_unittest.o : $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc
 	
-search_community_with_floydwarshall_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o search_community.o main.o search_community_with_floydwarshall_unittest.o gtest_main.a
+search_community_with_floydwarshall_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o search_community.o main.o search_community_with_floydwarshall_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 	
 search_community_with_johnson_queue_unittest.o : $(TESTS_DIR)/search_community_with_johnson_queue_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_johnson_queue_unittest.cc
 	
-search_community_with_johnson_queue_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o search_community.o main.o search_community_with_johnson_queue_unittest.o gtest_main.a
+search_community_with_johnson_queue_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o search_community.o main.o search_community_with_johnson_queue_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+search_community_with_johnson_array_unittest.o : $(TESTS_DIR)/search_community_with_johnson_array_unittest.cc \
+                     search_community.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_johnson_array_unittest.cc
+	
+search_community_with_johnson_array_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o search_community.o main.o search_community_with_johnson_array_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

@@ -1,9 +1,9 @@
 #include "dijkstra.h"
-DijkstraResult* dijkstra_array(Graph *graph, int source){
-    DijkstraResult* dijkstra_result;
+DijkstraArrayResult* dijkstra_array(Graph *graph, int source){
+    DijkstraArrayResult* dijkstra_result;
     int *nodes2Visit;
     int u;
-    dijkstra_result = allocate_memory_dijkstra(graph->numbers_nodes);
+    dijkstra_result = allocate_memory_dijkstra_array(graph->numbers_nodes);
     nodes2Visit = (int*)malloc(sizeof(int) * graph->numbers_nodes);
     initialize(dijkstra_result,nodes2Visit, source, graph->numbers_nodes);
     while(exist_node2visit(nodes2Visit, graph->numbers_nodes)){
@@ -15,15 +15,15 @@ DijkstraResult* dijkstra_array(Graph *graph, int source){
     return dijkstra_result;
 }; 
 
-DijkstraResult* allocate_memory_dijkstra(int numbers_nodes){
-    DijkstraResult* dijkstra_result;
-    dijkstra_result = (DijkstraResult*)malloc(sizeof(DijkstraResult));
+DijkstraArrayResult* allocate_memory_dijkstra_array(int numbers_nodes){
+    DijkstraArrayResult* dijkstra_result;
+    dijkstra_result = (DijkstraArrayResult*)malloc(sizeof(DijkstraArrayResult));
     dijkstra_result->distance = (int*)malloc(sizeof(int) * numbers_nodes);
     dijkstra_result->predecessor = (int*)malloc(sizeof(int) * numbers_nodes);
     return dijkstra_result;
 };
 
-void initialize(DijkstraResult* dijkstra_result, int *nodes2Visit, int source, int numbers_nodes){
+void initialize(DijkstraArrayResult* dijkstra_result, int *nodes2Visit, int source, int numbers_nodes){
     for(int i = 0; i < numbers_nodes; i++){
         dijkstra_result->distance[i] = MAX_WEIGHT;
         dijkstra_result->predecessor[i] = PREDECESSOR_NULL;
@@ -53,7 +53,7 @@ int extract_minimum(int *nodes_distance, int numbers_nodes){
     return index_min;
 };
 
-void relax(DijkstraResult* dijkstra_result, int* nodes2Visit, Graph* graph, int u, int v){
+void relax(DijkstraArrayResult* dijkstra_result, int* nodes2Visit, Graph* graph, int u, int v){
     if(exist_arc(graph, u, v) and dijkstra_result->distance[v] > dijkstra_result->distance[u] + get_cost_edge(graph, u, v)){
         dijkstra_result->distance[v] = dijkstra_result->distance[u] + get_cost_edge(graph, u, v);
         dijkstra_result->predecessor[v] = u;

@@ -2,7 +2,7 @@
 JohnsonResult* johnson_array(Graph *graph){
     JohnsonResult *jonhson_result;
     BellmanFordResult *bellman_ford_result;
-    DijkstraResult* dijkstra_result;
+    DijkstraArrayResult* dijkstra_result;
     jonhson_result = (JohnsonResult *)malloc(sizeof(JohnsonResult));
     jonhson_result->distance = (int **)malloc(graph->numbers_nodes * sizeof(int *));
     jonhson_result->predecessor = (int **)malloc(graph->numbers_nodes * sizeof(int *));
@@ -12,7 +12,7 @@ JohnsonResult* johnson_array(Graph *graph){
         for(int j = 0; j < graph->numbers_nodes; j++)
                 jonhson_result->distance[i][j] = 0;
     }
-    bellman_ford_result = reconsider_graph(graph);
+    bellman_ford_result = reconsider_graph_johnson_array(graph);
     for(int i = 0; i < graph->numbers_nodes; i++){
         dijkstra_result = dijkstra_array(graph, i);
         for(int j = 0; j < graph->numbers_nodes; j++){
@@ -23,12 +23,12 @@ JohnsonResult* johnson_array(Graph *graph){
     return jonhson_result;
 };
 
-BellmanFordResult* reconsider_graph(Graph *graph){
+BellmanFordResult* reconsider_graph_johnson_array(Graph *graph){
     BellmanFordResult *bellman_ford_result;
     Graph graph_reconsidered;
     graph_reconsidered.numbers_nodes = graph->numbers_nodes + 1;
     allocate_memory(&graph_reconsidered);
-    create_graph_reconsidered(&graph_reconsidered, graph);
+    create_graph_reconsidered_johnson_array(&graph_reconsidered, graph);
     bellman_ford_result = bellmanFord(&graph_reconsidered, graph_reconsidered.numbers_nodes-1);
     if(bellman_ford_result->exist_negative_cycle == false){
         for(int i = 0; i < graph->numbers_nodes; i++)
@@ -39,7 +39,7 @@ BellmanFordResult* reconsider_graph(Graph *graph){
     return bellman_ford_result;
 };
 
-void create_graph_reconsidered(Graph *graph_reconsidered,Graph *graph){
+void create_graph_reconsidered_johnson_array(Graph *graph_reconsidered,Graph *graph){
     for(int i = 0; i < graph->numbers_nodes; i++)
         for(int j = 0; j < graph->numbers_nodes; j++)
             insert_arc(graph_reconsidered, i, j, get_cost_edge(graph, i, j));

@@ -14,7 +14,7 @@ TEST(JonhsonTest, GraphReconsidered){
     insert_arc(&graph, 3, 0, 2);
     insert_arc(&graph, 3, 2, -5);
     insert_arc(&graph, 4, 3, 6);
-    bellman_ford_result = reconsider_graph(&graph);
+    bellman_ford_result = reconsider_graph_johnson_array(&graph);
     ASSERT_EQ(4, get_cost_edge(&graph, 0, 1));
     ASSERT_EQ(13, get_cost_edge(&graph, 0, 2));
     ASSERT_EQ(0, get_cost_edge(&graph, 0, 4));

@@ -5,10 +5,12 @@
 #include "algorithms/RepeatedSquaring/repeated_squaring.h"
 #include "algorithms/FloydWarsHall/floyd_warshall.h"
 #include "algorithms/JohnsonQueue/johnson.h"
+#include "algorithms/JohnsonArray/johnson.h"
 #include "constant.h"
 int *calculate_communities(Graph *, int, ResultShortestPath *(*func)(Graph *));
 int *calculate_communities_repeated_square(Graph *, int);
 int *calculate_communities_floyd_warshall(Graph *, int);
 int *calculate_communities_johnson_queue(Graph *, int);
+int *calculate_communities_johnson_array(Graph *, int);
 
 #endif

@@ -3,7 +3,7 @@
 
 TEST(DijkstraTest, ExampleCormen){
     Graph graph;
-    DijkstraResult *dijkstra_result;
+    DijkstraArrayResult *dijkstra_result;
     graph.numbers_nodes = 5;
     allocate_memory(&graph);
     insert_arc(&graph, 0, 1, 10);
@@ -30,7 +30,7 @@ TEST(DijkstraTest, ExampleCormen){
 }
 TEST(DijkstraTest, ExampleCormen1){
     Graph graph;
-    DijkstraResult *dijkstra_result;
+    DijkstraArrayResult *dijkstra_result;
     graph.numbers_nodes = 5;
     allocate_memory(&graph);
     insert_arc(&graph, 0, 1, 4);
