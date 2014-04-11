@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_dijkstra_array_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_johnson_queue_tests run_johnson_array_tests run_search_community_tests search_community_with_floydwarshall_tests run_search_community_with_johnson_queue_tests run_search_community_with_johnson_array_tests
+TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_dijkstra_array_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_nbfs_tests run_johnson_queue_tests run_johnson_array_tests run_search_community_tests search_community_with_floydwarshall_tests run_search_community_with_johnson_queue_tests run_search_community_with_johnson_array_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -79,7 +79,10 @@ run_johnson_array_tests: johnson_array_unittest
 
 run_bellman_ford_tests: bellman_ford_unittest
 	./bellman_ford_unittest
-	
+
+run_nbfs_tests: nbfs_unittest
+	./nbfs_unittest
+
 run_search_community_tests: search_community_unittest
 	./search_community_unittest
 
@@ -145,6 +148,9 @@ dijkstra_array.o : $(ALGORITHM_DIR)/DijkstraWithArray/dijkstra.c $(ALGORITHM_DIR
 
 bellman_ford.o : $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c
+
+nbfs.o : $(ALGORITHM_DIR)/NBreadthFirstSearch/bfs.c $(ALGORITHM_DIR)/NBreadthFirstSearch/bfs.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/NBreadthFirstSearch/bfs.c -o nbfs.o
 
 repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c
@@ -236,6 +242,13 @@ bellman_ford_unittest.o : $(TESTS_DIR)/bellman_ford_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/bellman_ford_unittest.cc
 
 bellman_ford_unittest : graph.o bellman_ford.o bellman_ford_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+nbfs_unittest.o : $(TESTS_DIR)/nbfs_unittest.cc \
+                     $(ALGORITHM_DIR)/NBreadthFirstSearch/bfs.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/nbfs_unittest.cc
+
+nbfs_unittest : graph.o queue.o nbfs.o nbfs_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
