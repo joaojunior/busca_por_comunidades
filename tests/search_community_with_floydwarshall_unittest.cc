@@ -94,6 +94,54 @@ TEST(SearchComunityTest, CalculateCommunitiesWithFloydWarshallWith1Community){
     ASSERT_EQ(1, communities2nodes[3]);
 }
 
+TEST(SearchComunityTest, CalculateCommunitiesWith2Communities){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_floyd_warshall(&graph, 2);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(1, communities2nodes[1]);
+    ASSERT_EQ(1, communities2nodes[2]);
+    ASSERT_EQ(2, communities2nodes[3]);
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWith3Communities){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_floyd_warshall(&graph, 3);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(2, communities2nodes[1]);
+    ASSERT_EQ(2, communities2nodes[2]);
+    ASSERT_EQ(3, communities2nodes[3]);
+}
+
+TEST(SearchComunityTest, CalculateCommunitiesWith4Communities){
+    Graph graph;
+    int *communities2nodes;
+    graph.numbers_nodes = 4;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 1);
+    insert_edge(&graph, 0, 2, 1);
+    insert_edge(&graph, 1, 2, 1);
+    insert_edge(&graph, 2, 3, 1);
+    communities2nodes = calculate_communities_floyd_warshall(&graph, 4);
+    ASSERT_EQ(1, communities2nodes[0]);
+    ASSERT_EQ(2, communities2nodes[1]);
+    ASSERT_EQ(3, communities2nodes[2]);
+    ASSERT_EQ(4, communities2nodes[3]);
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
