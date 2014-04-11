@@ -33,7 +33,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_search_community_tests search_community_with_floydwarshall_tests
+TESTS = run_graph_tests run_heap_min_tests min_priority_queue_unittest run_dijkstra_queue_unittest run_repeated_squaring_tests run_floyd_warshall_tests run_bellman_ford_tests run_johnson_queue_tests run_search_community_tests search_community_with_floydwarshall_tests
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -64,6 +64,9 @@ run_repeated_squaring_tests: repeated_squaring_unittest
 
 run_floyd_warshall_tests: floyd_warshall_unittest
 	./floyd_warshall_unittest
+	
+run_johnson_queue_tests: johnson_queue_unittest
+	./johnson_queue_unittest
 
 run_bellman_ford_tests: bellman_ford_unittest
 	./bellman_ford_unittest
@@ -121,19 +124,19 @@ min_priority_queue.o : $(DATA_STRUCTURE_DIR)/MinPriorityQueue/min_priority_queue
 
 dijkstra_queue.o : $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.c $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/DijkstraWithMinPriorityQueue/dijkstra.c -o dijkstra_queue.o
-	
+
+bellman_ford.o : $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c
+
 repeated_squaring.o : $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/RepeatedSquaring/repeated_squaring.c
 
 floyd_warshall.o : $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/FloydWarsHall/floyd_warshall.c
 
-bellman_ford.o : $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/Bellman-Ford/bellman_ford.c
+johnson_queue.o : $(ALGORITHM_DIR)/JohnsonQueue/johnson.c $(ALGORITHM_DIR)/JohnsonQueue/johnson.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/JohnsonQueue/johnson.c -o johnson_queue.o
 
-johnson.o : $(ALGORITHM_DIR)/JohnsonWithMinPriorityQueue/johnson.c $(ALGORITHM_DIR)/JohnsonWithMinPriorityQueue/johnson.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(ALGORITHM_DIR)/JohnsonWithMinPriorityQueue/johnson.c
-	
 search_community.o : search_community.c search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c search_community.c
 	
@@ -163,6 +166,13 @@ dijkstra_queue_unittest.o : $(TESTS_DIR)/dijkstra_queue_unittest.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/dijkstra_queue_unittest.cc
 
 dijkstra_queue_unittest : graph.o heap_min.o min_priority_queue.o dijkstra_queue.o dijkstra_queue_unittest.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+johnson_queue_unittest.o : $(TESTS_DIR)/johnson_queue_unittest.cc \
+                     $(ALGORITHM_DIR)/JohnsonQueue/johnson.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/johnson_queue_unittest.cc
+
+johnson_queue_unittest : graph.o heap_min.o min_priority_queue.o bellman_ford.o dijkstra_queue.o johnson_queue.o johnson_queue_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 repeated_squaring_unittest.o : $(TESTS_DIR)/repeated_squaring_unittest.cc \
