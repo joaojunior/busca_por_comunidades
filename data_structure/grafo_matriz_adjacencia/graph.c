@@ -44,3 +44,11 @@ void remove_edge(Graph *graph, int source, int dest){
     graph->edges[source][dest] = MAX_WEIGHT;
     graph->edges[dest][source] = MAX_WEIGHT;
 };
+
+bool node_is_isolated(Graph *graph, int node){
+    for(int j = 0; j < graph->numbers_nodes; j++)
+        if(graph->edges[node][j] != MAX_WEIGHT){
+            return false;
+        }
+    return true;
+};

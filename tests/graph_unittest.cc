@@ -91,6 +91,16 @@ TEST(GraphTest, RemoveEdge){
     ASSERT_EQ(0, graph.numbers_edges);
 }
 
+TEST(GraphTest, NodeIsIsolated){
+    Graph graph;
+    graph.numbers_nodes = 3;
+    allocate_memory(&graph);
+    insert_edge(&graph, 0, 1, 10);
+    ASSERT_FALSE(node_is_isolated(&graph, 0));
+    ASSERT_FALSE(node_is_isolated(&graph, 1));
+    ASSERT_TRUE(node_is_isolated(&graph, 2));
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
