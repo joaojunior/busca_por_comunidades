@@ -80,24 +80,10 @@ void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *resu
                 if((edge2remove->source != i or edge2remove->dest != j)){
                     shortest_path = get_shortest_path(result->predecessor, i, j);
                     if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
-                        nodes_before = get_nodes_before_node_i_inclusive_in_shortest_path(shortest_path, edge2remove->source);
-                        nodes_between = get_nodes_between_nodes_inclusive_in_shortest_path(shortest_path, edge2remove->source, edge2remove->dest);
-                        nodes_after = get_nodes_after_node_i_inclusive_in_shortest_path(shortest_path, edge2remove->dest);
                         enqueue(&nodes_before1, i);
                         enqueue(&nodes_after1, j);
-                        //while(not empty(nodes_before)){
-                            //source = dequeue(nodes_before);
-                            //result->predecessor[source][edge2remove->dest] = k;
-                            //result->predecessor[edge2remove->dest][source] = result->predecessor[source][edge2remove->dest];
-                            //while(not empty(nodes_after)){
-                            //    dest = dequeue(nodes_after);
-                                result->distance[i][j] += difference;
-                                result->distance[j][i] = result->distance[i][j];
-                                //enqueue(&aux, dest);
-                            //}
-                            //while(not empty(&aux))
-                            //    enqueue(nodes_after, dequeue(&aux));
-                        //}
+                        result->distance[i][j] += difference;
+                        result->distance[j][i] = result->distance[i][j];
                         source = dequeue(&nodes_between1);
                         while(not empty(&nodes_between1)){
                             dest = dequeue(&nodes_between1);
@@ -112,7 +98,6 @@ void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *resu
         while(not empty(&nodes_before1)){
             source = dequeue(&nodes_before1);
             result->predecessor[source][edge2remove->dest] = k;
-            //result->predecessor[edge2remove->dest][source] = result->predecessor[source][edge2remove->dest];
         }
         while(not empty(&nodes_after1)){
             source = dequeue(&nodes_after1);
@@ -123,39 +108,22 @@ void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *resu
         result->predecessor[edge2remove->source][edge2remove->dest] = k;
         result->predecessor[edge2remove->dest][edge2remove->source] = node_before_source_removed;
     } else{
-        result->distance[edge2remove->source][edge2remove->dest] = MAX_WEIGHT;
         for(int i = 0; i < graph->numbers_nodes; i++){
             for(int j = i + 1; j < graph->numbers_nodes; j++){
                 if((edge2remove->source != i or edge2remove->dest != j)){
                     shortest_path = get_shortest_path(result->predecessor, i, j);
                     if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
-                        nodes_before = get_nodes_before_node_i_inclusive_in_shortest_path(shortest_path, edge2remove->source);
-                        nodes_between = get_nodes_between_nodes_inclusive_in_shortest_path(shortest_path, edge2remove->source, edge2remove->dest);
-                        nodes_after = get_nodes_after_node_i_inclusive_in_shortest_path(shortest_path, edge2remove->dest);
-                        source = dequeue(nodes_before);
-                        while(not empty(nodes_before)){
-                            while(not empty(nodes_after)){
-                                dest = dequeue(nodes_after);
-                                result->distance[source][dest] = MAX_WEIGHT;
-                                result->distance[dest][source] = result->distance[source][dest];
-                                result->predecessor[source][dest] = PREDECESSOR_NULL;
-                                result->predecessor[dest][source] = result->predecessor[source][dest];
-                                enqueue(&aux, dest);
-                            }
-                            while(not empty(&aux))
-                                enqueue(nodes_after, dequeue(&aux));
-                            dest = dequeue(nodes_before);
+                        source = dequeue(shortest_path);
+                        while(not empty(shortest_path)){
+                            dest = dequeue(shortest_path);
                             quantity_shortest_path_in_edge[source][dest] -= 1;
                             quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
                             source = dest;
                         }
-                        source = dequeue(nodes_after);
-                        while(not empty(nodes_after)){
-                            dest = dequeue(nodes_after);
-                            quantity_shortest_path_in_edge[source][dest] -= 1;
-                            quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
-                            source = dest;
-                        }
+                    result->predecessor[i][j] = PREDECESSOR_NULL;
+                    result->predecessor[j][i] = PREDECESSOR_NULL;
+                    result->distance[i][j] = MAX_WEIGHT;
+                    result->distance[j][i] = MAX_WEIGHT;
                     }
                 }
             }
