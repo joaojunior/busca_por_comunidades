@@ -18,12 +18,9 @@ Arc *get_arc_with_bigger_weight(int **, int);
 int *calculate_communities(int **, int);
 int get_max_community(int *, int);
 void calculate_distance_after_remove_edge(Graph *, ResultShortestPath *, Arc *, int **);
-void update_distance_and_predecessor(int **, int , int , Queue *);
-
+void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(Graph *, ResultShortestPath *, Arc *, int **, BellmanFordResult *);
+void update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes_edge_removed(Graph *, ResultShortestPath *, Arc *, int **);
 Queue *get_shortest_path(int**, int, int);
 void walk_in_shortest_path(int **, Queue *, int, int);
-Queue *get_nodes_before_node_i_inclusive_in_shortest_path(Queue *, int);
-Queue *get_nodes_between_nodes_inclusive_in_shortest_path(Queue *, int, int);
-Queue *get_nodes_after_node_i_inclusive_in_shortest_path(Queue*, int);
 bool path_use_arc(Queue *, int, int);
 #endif

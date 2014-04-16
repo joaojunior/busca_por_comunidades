@@ -61,89 +61,95 @@ int get_max_community(int *communities2nodes, int numbers_nodes){
 };
 
 void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge){
-    int k, difference, source, dest, node_before_source_removed;
-    Queue *shortest_path, *nodes_before, *nodes_between, *nodes_after, aux, nodes_between1, nodes_before1, nodes_after1;
     BellmanFordResult *result_bellman_ford;
     result_bellman_ford = bellmanFord(graph, edge2remove->source);
-    k = result_bellman_ford->predecessor[edge2remove->dest];
-    if(k != PREDECESSOR_NULL){
-        source = edge2remove->dest;
-        while(source != edge2remove->source){
-            enqueue(&nodes_between1, source);
-            node_before_source_removed = source;
-            source = result_bellman_ford->predecessor[source];
-        }
-        enqueue(&nodes_between1, source);
-        difference = result_bellman_ford->distance[edge2remove->dest] - result->distance[edge2remove->source][edge2remove->dest];
-        for(int i = 0; i < graph->numbers_nodes; i++){
-            for(int j = i + 1; j < graph->numbers_nodes; j++){
-                if((edge2remove->source != i or edge2remove->dest != j)){
-                    shortest_path = get_shortest_path(result->predecessor, i, j);
-                    if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
-                        enqueue(&nodes_before1, i);
-                        enqueue(&nodes_after1, j);
-                        result->distance[i][j] += difference;
-                        result->distance[j][i] = result->distance[i][j];
-                        source = dequeue(&nodes_between1);
-                        while(not empty(&nodes_between1)){
-                            dest = dequeue(&nodes_between1);
-                            quantity_shortest_path_in_edge[source][dest] += quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest];
-                            quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
-                            source = dest;
-                        }
-                    }
-                }
-            }
-        }
-        while(not empty(&nodes_before1)){
-            source = dequeue(&nodes_before1);
-            result->predecessor[source][edge2remove->dest] = k;
-        }
-        while(not empty(&nodes_after1)){
-            source = dequeue(&nodes_after1);
-            result->predecessor[source][edge2remove->source] = node_before_source_removed;
-        }
-        result->distance[edge2remove->source][edge2remove->dest] = result_bellman_ford->distance[edge2remove->dest];
-        result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
-        result->predecessor[edge2remove->source][edge2remove->dest] = k;
-        result->predecessor[edge2remove->dest][edge2remove->source] = node_before_source_removed;
+    if(result_bellman_ford->predecessor[edge2remove->dest] != PREDECESSOR_NULL){
+        update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(graph, result, edge2remove, quantity_shortest_path_in_edge, result_bellman_ford);
     } else{
-        for(int i = 0; i < graph->numbers_nodes; i++){
-            for(int j = i + 1; j < graph->numbers_nodes; j++){
-                if((edge2remove->source != i or edge2remove->dest != j)){
-                    shortest_path = get_shortest_path(result->predecessor, i, j);
-                    if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
-                        source = dequeue(shortest_path);
-                        while(not empty(shortest_path)){
-                            dest = dequeue(shortest_path);
-                            quantity_shortest_path_in_edge[source][dest] -= 1;
-                            quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
-                            source = dest;
-                        }
-                    result->predecessor[i][j] = PREDECESSOR_NULL;
-                    result->predecessor[j][i] = PREDECESSOR_NULL;
-                    result->distance[i][j] = MAX_WEIGHT;
-                    result->distance[j][i] = MAX_WEIGHT;
-                    }
-                }
-            }
-        }
-        result->distance[edge2remove->source][edge2remove->dest] = MAX_WEIGHT;
-        result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
-        result->predecessor[edge2remove->source][edge2remove->dest] = PREDECESSOR_NULL;
-        result->predecessor[edge2remove->dest][edge2remove->source] = result->predecessor[edge2remove->source][edge2remove->dest];
+        update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes_edge_removed(graph, result, edge2remove, quantity_shortest_path_in_edge);
     }
     quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest] = 0;
     quantity_shortest_path_in_edge[edge2remove->dest][edge2remove->source] = quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest];
 };
 
-void update_distance_and_predecessor(int **predecessor, int i, int j, Queue *path){
-    if(i != j and predecessor[i][j] != PREDECESSOR_NULL){
-        update_distance_and_predecessor(predecessor, i, predecessor[i][j], path);
-        //quantity_shortest_path_in_edge[predecessor[i][j]][j] += 1;
-        enqueue(path, predecessor[i][j]);
-        enqueue(path, j);
+void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge, BellmanFordResult *result_bellman_ford){
+    int difference, source, dest, node_before_source_removed;
+    Queue *shortest_path, nodes_between_new_shortest_path, nodes_before_arc_removed, nodes_after_arc_removed;
+    source = edge2remove->dest;
+    while(source != edge2remove->source){
+        enqueue(&nodes_between_new_shortest_path, source);
+        node_before_source_removed = source;
+        source = result_bellman_ford->predecessor[source];
     }
+    enqueue(&nodes_between_new_shortest_path, source);
+    source = dequeue(&nodes_between_new_shortest_path);
+    while(not empty(&nodes_between_new_shortest_path)){
+        dest = dequeue(&nodes_between_new_shortest_path);
+        quantity_shortest_path_in_edge[source][dest] += quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest];
+        quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
+        source = dest;
+    }
+    difference = result_bellman_ford->distance[edge2remove->dest] - result->distance[edge2remove->source][edge2remove->dest];
+    for(int i = 0; i < graph->numbers_nodes; i++){
+        for(int j = i + 1; j < graph->numbers_nodes; j++){
+            if((edge2remove->source != i or edge2remove->dest != j)){
+                shortest_path = get_shortest_path(result->predecessor, i, j);
+                if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
+                    enqueue(&nodes_before_arc_removed, i);
+                    enqueue(&nodes_after_arc_removed, j);
+                    result->distance[i][j] += difference;
+                    result->distance[j][i] = result->distance[i][j];
+                }
+            }
+        }
+    }
+    while(not empty(&nodes_before_arc_removed)){
+        source = dequeue(&nodes_before_arc_removed);
+        result->predecessor[source][edge2remove->dest] = result_bellman_ford->predecessor[edge2remove->dest];;
+    }
+    while(not empty(&nodes_after_arc_removed)){
+        source = dequeue(&nodes_after_arc_removed);
+        result->predecessor[source][edge2remove->source] = node_before_source_removed;
+    }
+    result->distance[edge2remove->source][edge2remove->dest] = result_bellman_ford->distance[edge2remove->dest];
+    result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
+    result->predecessor[edge2remove->source][edge2remove->dest] = result_bellman_ford->predecessor[edge2remove->dest];;
+    result->predecessor[edge2remove->dest][edge2remove->source] = node_before_source_removed;
+};
+
+void update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes_edge_removed(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge){
+    int source, dest;
+    Queue *shortest_path, nodes_before_arc_removed, nodes_after_arc_removed;
+    for(int i = 0; i < graph->numbers_nodes; i++){
+        for(int j = i + 1; j < graph->numbers_nodes; j++){
+            if((edge2remove->source != i or edge2remove->dest != j)){
+                shortest_path = get_shortest_path(result->predecessor, i, j);
+                if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
+                    source = dequeue(shortest_path);
+                    while(not empty(shortest_path)){
+                        dest = dequeue(shortest_path);
+                        quantity_shortest_path_in_edge[source][dest] -= 1;
+                        quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
+                        source = dest;
+                    }
+                    enqueue(&nodes_before_arc_removed, i);
+                    enqueue(&nodes_after_arc_removed, j);
+                }
+            }
+        }
+    }
+    while(not empty(&nodes_before_arc_removed)){
+        source = dequeue(&nodes_before_arc_removed);
+        dest = dequeue(&nodes_after_arc_removed);
+        result->predecessor[source][dest] = PREDECESSOR_NULL;
+        result->predecessor[dest][source] = result->predecessor[source][dest];
+        result->distance[source][dest] = MAX_WEIGHT;
+        result->distance[dest][source] = result->distance[source][dest];
+    }
+    result->distance[edge2remove->source][edge2remove->dest] = MAX_WEIGHT;
+    result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
+    result->predecessor[edge2remove->source][edge2remove->dest] = PREDECESSOR_NULL;
+    result->predecessor[edge2remove->dest][edge2remove->source] = result->predecessor[edge2remove->source][edge2remove->dest];
 };
 
 Queue *get_shortest_path(int **predecessor, int source, int dest){
@@ -162,48 +168,6 @@ void walk_in_shortest_path(int **predecessor, Queue *path, int i, int j){
         walk_in_shortest_path(predecessor, path, i, predecessor[i][j]);
         enqueue(path, j);
     }
-};
-
-Queue *get_nodes_before_node_i_inclusive_in_shortest_path(Queue *path, int node){
-    Queue *nodes;
-    int i;
-    nodes = (Queue *)malloc(sizeof(Queue));
-    nodes->first = NULL;
-    nodes->last = NULL;
-    i = dequeue(path);
-    while(i != node){
-        enqueue(nodes, i);
-        i = dequeue(path);
-    }
-    enqueue(nodes, node);
-    return nodes;
-};
-
-Queue *get_nodes_between_nodes_inclusive_in_shortest_path(Queue *path, int source, int dest){
-    Queue *nodes;
-    int i;
-    nodes = (Queue *)malloc(sizeof(Queue));
-    nodes->first = NULL;
-    nodes->last = NULL;
-    enqueue(nodes, source);
-    i = dequeue(path);
-    while(i != dest){
-        enqueue(nodes, i);
-        i = dequeue(path);
-    }
-    enqueue(nodes, dest);
-    return nodes;
-};
-
-Queue *get_nodes_after_node_i_inclusive_in_shortest_path(Queue *path, int node){
-    Queue *nodes;
-    nodes = (Queue *)malloc(sizeof(Queue));
-    nodes->first = NULL;
-    nodes->last = NULL;
-    enqueue(nodes, node);
-    while(not empty(path))
-        enqueue(nodes, dequeue(path));
-    return nodes;
 };
 
 bool path_use_arc(Queue *path, int source, int dest){

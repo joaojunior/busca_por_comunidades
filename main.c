@@ -33,6 +33,7 @@ int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquar
         if(numbers_communities < quantity_communities){
             arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph->numbers_nodes);
             remove_edge(graph, arc->source, arc->dest);
+            //calculate_distance_after_remove_edge(graph, shortest_path_result, arc, quantity_shortest_path_in_edge);
         }
     } while(numbers_communities < quantity_communities);
     return communities2nodes;

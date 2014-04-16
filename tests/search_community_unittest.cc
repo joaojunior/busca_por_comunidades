@@ -258,7 +258,6 @@ TEST(SearchComunityTest, VerifyQuantityShortestPathInEdgeWithRepeatedSquareAfter
 TEST(SearchComunityTest, CalculateCommunities){
     Graph graph;
     RepeatedSquaringResult *repeated_squaring_result;
-    int **quantity_shortest_path_in_edge;
     int *communities2nodes;
     graph.numbers_nodes = 4;
     allocate_memory(&graph);
@@ -267,7 +266,6 @@ TEST(SearchComunityTest, CalculateCommunities){
     insert_edge(&graph, 1, 2, 1);
     insert_edge(&graph, 2, 3, 1);
     repeated_squaring_result = repeated_squaring(&graph);
-    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(repeated_squaring_result->predecessor, graph.numbers_nodes);
     communities2nodes = calculate_communities(repeated_squaring_result->distance, graph.numbers_nodes);
     ASSERT_EQ(1, communities2nodes[0]);
     ASSERT_EQ(1, communities2nodes[1]);
@@ -279,7 +277,6 @@ TEST(SearchComunityTest, CalculateCommunities){
 TEST(SearchComunityTest, CalculateCommunitiesWithGraphNotConnected){
     Graph graph;
     RepeatedSquaringResult *repeated_squaring_result;
-    int **quantity_shortest_path_in_edge;
     int *communities2nodes;
     graph.numbers_nodes = 4;
     allocate_memory(&graph);
@@ -287,7 +284,6 @@ TEST(SearchComunityTest, CalculateCommunitiesWithGraphNotConnected){
     insert_edge(&graph, 0, 2, 1);
     insert_edge(&graph, 1, 2, 1);
     repeated_squaring_result = repeated_squaring(&graph);
-    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(repeated_squaring_result->predecessor, graph.numbers_nodes);
     communities2nodes = calculate_communities(repeated_squaring_result->distance, graph.numbers_nodes);
     ASSERT_EQ(1, communities2nodes[0]);
     ASSERT_EQ(1, communities2nodes[1]);
@@ -524,80 +520,10 @@ TEST(SearchComunityTest1, GetShortestPath){
     ASSERT_EQ(5,dequeue(path));
 }
 
-TEST(SearchComunityTest2, GetNodesBeforeIInclusiveInShortestPath){
-    Graph graph;
-    ResultShortestPath *result;
-    Queue *path, *nodes_before_i;
-    graph.numbers_nodes = 8;
-    allocate_memory(&graph);
-    insert_edge(&graph, 0, 1, 1);
-    insert_edge(&graph, 1, 2, 1);
-    insert_edge(&graph, 2, 3, 1);
-    insert_edge(&graph, 2, 6, 1);
-    insert_edge(&graph, 3, 4, 1);
-    insert_edge(&graph, 3, 7, 1);
-    insert_edge(&graph, 4, 5, 1);
-    insert_edge(&graph, 6, 7, 1);
-    result = repeated_squaring(&graph);
-    path = get_shortest_path(result->predecessor, 0, 5);
-    nodes_before_i = get_nodes_before_node_i_inclusive_in_shortest_path(path, 2);
-    ASSERT_EQ(0,dequeue(nodes_before_i));
-    ASSERT_EQ(1,dequeue(nodes_before_i));
-    ASSERT_EQ(2,dequeue(nodes_before_i));
-}
-
-TEST(SearchComunityTest3, GetNodesBetweenInclusiveInShortestPath){
-    Graph graph;
-    ResultShortestPath *result;
-    Queue *path, *nodes_before_i, *nodes_between;
-    graph.numbers_nodes = 8;
-    allocate_memory(&graph);
-    insert_edge(&graph, 0, 1, 1);
-    insert_edge(&graph, 1, 2, 1);
-    insert_edge(&graph, 2, 3, 10);
-    insert_edge(&graph, 2, 6, 1);
-    insert_edge(&graph, 3, 4, 1);
-    insert_edge(&graph, 3, 7, 1);
-    insert_edge(&graph, 4, 5, 1);
-    insert_edge(&graph, 6, 7, 1);
-    result = repeated_squaring(&graph);
-    path = get_shortest_path(result->predecessor, 0, 5);
-    nodes_before_i = get_nodes_before_node_i_inclusive_in_shortest_path(path, 2);
-    nodes_between = get_nodes_between_nodes_inclusive_in_shortest_path(path, 2, 3);
-    ASSERT_EQ(2,dequeue(nodes_between));
-    ASSERT_EQ(6,dequeue(nodes_between));
-    ASSERT_EQ(7,dequeue(nodes_between));
-    ASSERT_EQ(3,dequeue(nodes_between));
-}
-
-TEST(SearchComunityTest4, GetNodesAfterIInclusiveInShortestPath){
-    Graph graph;
-    ResultShortestPath *result;
-    Queue *path, *nodes_before_i, *nodes_between, *nodes_after_i;
-    graph.numbers_nodes = 8;
-    allocate_memory(&graph);
-    insert_edge(&graph, 0, 1, 1);
-    insert_edge(&graph, 1, 2, 1);
-    insert_edge(&graph, 2, 3, 1);
-    insert_edge(&graph, 2, 6, 1);
-    insert_edge(&graph, 3, 4, 1);
-    insert_edge(&graph, 3, 7, 1);
-    insert_edge(&graph, 4, 5, 1);
-    insert_edge(&graph, 6, 7, 1);
-    result = repeated_squaring(&graph);
-    path = get_shortest_path(result->predecessor, 0, 5);
-    nodes_before_i = get_nodes_before_node_i_inclusive_in_shortest_path(path, 2);
-    nodes_between = get_nodes_between_nodes_inclusive_in_shortest_path(path, 2, 3);
-    nodes_after_i = get_nodes_after_node_i_inclusive_in_shortest_path(path, 3);
-    ASSERT_EQ(3,dequeue(nodes_after_i));
-    ASSERT_EQ(4,dequeue(nodes_after_i));
-    ASSERT_EQ(5,dequeue(nodes_after_i));
-}
-
 TEST(SearchComunityTest, PathUseArc){
     Graph graph;
     ResultShortestPath *result;
-    Queue *path, *nodes_before_i, *nodes_between, *nodes_after_i;
+    Queue *path;
     graph.numbers_nodes = 8;
     allocate_memory(&graph);
     insert_edge(&graph, 0, 1, 1);
