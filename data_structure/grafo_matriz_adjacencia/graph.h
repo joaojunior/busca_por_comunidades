@@ -18,5 +18,4 @@ int get_cost_edge(Graph *, int, int);
 bool exist_arc(Graph *, int, int);
 void remove_arc(Graph *, int, int);
 void remove_edge(Graph *, int, int);
-bool node_is_isolated(Graph *, int);
 #endif
