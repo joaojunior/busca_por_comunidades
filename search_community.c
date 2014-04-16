@@ -61,10 +61,10 @@ int get_max_community(int *communities2nodes, int numbers_nodes){
 };
 
 void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge){
-    BellmanFordResult *result_bellman_ford;
-    result_bellman_ford = bellmanFord(graph, edge2remove->source);
-    if(result_bellman_ford->predecessor[edge2remove->dest] != PREDECESSOR_NULL){
-        update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(graph, result, edge2remove, quantity_shortest_path_in_edge, result_bellman_ford);
+    BFSResult *result_bfs;
+    result_bfs = bfs(graph, edge2remove->source);
+    if(result_bfs->predecessor[edge2remove->dest] != PREDECESSOR_NULL){
+        update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(graph, result, edge2remove, quantity_shortest_path_in_edge, result_bfs);
     } else{
         update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes_edge_removed(graph, result, edge2remove, quantity_shortest_path_in_edge);
     }
@@ -72,14 +72,14 @@ void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *resu
     quantity_shortest_path_in_edge[edge2remove->dest][edge2remove->source] = quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest];
 };
 
-void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge, BellmanFordResult *result_bellman_ford){
+void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge, BFSResult *result_bfs){
     int difference, source, dest, node_before_source_removed;
     Queue *shortest_path, nodes_between_new_shortest_path, nodes_before_arc_removed, nodes_after_arc_removed;
     source = edge2remove->dest;
     while(source != edge2remove->source){
         enqueue(&nodes_between_new_shortest_path, source);
         node_before_source_removed = source;
-        source = result_bellman_ford->predecessor[source];
+        source = result_bfs->predecessor[source];
     }
     enqueue(&nodes_between_new_shortest_path, source);
     source = dequeue(&nodes_between_new_shortest_path);
@@ -89,7 +89,7 @@ void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edg
         quantity_shortest_path_in_edge[dest][source] = quantity_shortest_path_in_edge[source][dest];
         source = dest;
     }
-    difference = result_bellman_ford->distance[edge2remove->dest] - result->distance[edge2remove->source][edge2remove->dest];
+    difference = result_bfs->distance[edge2remove->dest] - result->distance[edge2remove->source][edge2remove->dest];
     for(int i = 0; i < graph->numbers_nodes; i++){
         for(int j = i + 1; j < graph->numbers_nodes; j++){
             if((edge2remove->source != i or edge2remove->dest != j)){
@@ -105,15 +105,15 @@ void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edg
     }
     while(not empty(&nodes_before_arc_removed)){
         source = dequeue(&nodes_before_arc_removed);
-        result->predecessor[source][edge2remove->dest] = result_bellman_ford->predecessor[edge2remove->dest];;
+        result->predecessor[source][edge2remove->dest] = result_bfs->predecessor[edge2remove->dest];;
     }
     while(not empty(&nodes_after_arc_removed)){
         source = dequeue(&nodes_after_arc_removed);
         result->predecessor[source][edge2remove->source] = node_before_source_removed;
     }
-    result->distance[edge2remove->source][edge2remove->dest] = result_bellman_ford->distance[edge2remove->dest];
+    result->distance[edge2remove->source][edge2remove->dest] = result_bfs->distance[edge2remove->dest];
     result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
-    result->predecessor[edge2remove->source][edge2remove->dest] = result_bellman_ford->predecessor[edge2remove->dest];;
+    result->predecessor[edge2remove->source][edge2remove->dest] = result_bfs->predecessor[edge2remove->dest];;
     result->predecessor[edge2remove->dest][edge2remove->source] = node_before_source_removed;
 };
 
