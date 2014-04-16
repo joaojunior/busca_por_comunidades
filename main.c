@@ -38,3 +38,28 @@ int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquar
     } while(numbers_communities < quantity_communities);
     return communities2nodes;
 };
+
+int main(int argc, char *argv[]){
+    int source, dest;
+    int *communities2nodes;
+    Graph graph;
+    FILE *arq;
+    Func v[5] = {calculate_communities_repeated_square, calculate_communities_floyd_warshall, calculate_communities_johnson_queue, 
+                calculate_communities_johnson_array, calculate_communities_nbfs};
+    graph.numbers_nodes = 12;
+    allocate_memory(&graph);
+    if(argc == 3){
+        arq = fopen(argv[1], "r");
+        if(arq == NULL)
+                printf("Erro, nao foi possivel abrir o arquivo\n");
+        else
+            while((fscanf(arq,"%d %d\n", &source, &dest)) !=EOF)
+                insert_edge(&graph, source-1, dest-1, 1);
+                //printf("%d %d\n", source, dest);
+        fclose(arq);
+        communities2nodes = v[atoi(argv[2])](&graph, 4);
+        for(int i = 0; i < graph.numbers_nodes; i++)
+            printf("%d %d\n", i+1, communities2nodes[i]);
+    }
+    return 0;
+}

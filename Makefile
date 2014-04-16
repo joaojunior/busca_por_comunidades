@@ -98,6 +98,8 @@ run_search_community_with_johnson_array_tests: search_community_with_johnson_arr
 run_search_community_with_nbfs_tests: search_community_with_nbfs_unittest
 	./search_community_with_nbfs_unittest
 
+compile_main: main clean
+
 run_tests: $(TESTS)
 
 # Builds gtest.a and gtest_main.a.
@@ -288,3 +290,6 @@ search_community_with_nbfs_unittest.o : $(TESTS_DIR)/search_community_with_nbfs_
 	
 search_community_with_nbfs_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o search_community_with_nbfs_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+	
+main : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o main.out

@@ -8,6 +8,8 @@
 #include "algorithms/JohnsonArray/johnson.h"
 #include "algorithms/NBreadthFirstSearch/bfs.h"
 #include "constant.h"
+#include <stdio.h>
+typedef int* (*Func)(Graph *, int);
 int *calculate_communities(Graph *, int, ResultShortestPath *(*func)(Graph *));
 int *calculate_communities_repeated_square(Graph *, int);
 int *calculate_communities_floyd_warshall(Graph *, int);
