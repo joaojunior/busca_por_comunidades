@@ -260,35 +260,35 @@ search_community_unittest.o : $(TESTS_DIR)/search_community_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_unittest.cc
 
-search_community_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o search_community_unittest.o gtest_main.a
+search_community_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o search_community_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_with_floydwarshall_unittest.o : $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_floydwarshall_unittest.cc
 	
-search_community_with_floydwarshall_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o search_community_with_floydwarshall_unittest.o gtest_main.a
+search_community_with_floydwarshall_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o search_community_with_floydwarshall_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 	
 search_community_with_johnson_queue_unittest.o : $(TESTS_DIR)/search_community_with_johnson_queue_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_johnson_queue_unittest.cc
 	
-search_community_with_johnson_queue_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o search_community_with_johnson_queue_unittest.o gtest_main.a
+search_community_with_johnson_queue_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o search_community_with_johnson_queue_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_with_johnson_array_unittest.o : $(TESTS_DIR)/search_community_with_johnson_array_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_johnson_array_unittest.cc
 	
-search_community_with_johnson_array_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o search_community_with_johnson_array_unittest.o gtest_main.a
+search_community_with_johnson_array_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o search_community_with_johnson_array_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 search_community_with_nbfs_unittest.o : $(TESTS_DIR)/search_community_with_nbfs_unittest.cc \
                      search_community.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/search_community_with_nbfs_unittest.cc
 	
-search_community_with_nbfs_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o search_community_with_nbfs_unittest.o gtest_main.a
+search_community_with_nbfs_unittest : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o search_community_with_nbfs_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 	
 main : graph.o repeated_squaring.o floyd_warshall.o bellman_ford.o heap_min.o min_priority_queue.o dijkstra_queue.o johnson_queue.o dijkstra_array.o johnson_array.o queue.o nbfs.o search_community.o main.o

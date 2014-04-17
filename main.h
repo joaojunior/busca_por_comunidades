@@ -9,11 +9,5 @@
 #include "algorithms/NBreadthFirstSearch/bfs.h"
 #include "constant.h"
 #include <stdio.h>
-int *calculate_communities(Graph *, int, ResultShortestPath *(*func)(Graph *));
-int *calculate_communities_repeated_square(Graph *, int);
-int *calculate_communities_floyd_warshall(Graph *, int);
-int *calculate_communities_johnson_queue(Graph *, int);
-int *calculate_communities_johnson_array(Graph *, int);
-int *calculate_communities_nbfs(Graph *, int);
 
 #endif

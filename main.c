@@ -1,44 +1,4 @@
 #include "main.h" 
-int *calculate_communities_repeated_square(Graph *graph, int quantity_communities){
-    return calculate_communities(graph, quantity_communities, &repeated_squaring);
-};
-
-int *calculate_communities_floyd_warshall(Graph *graph, int quantity_communities){
-    return calculate_communities(graph, quantity_communities, &floyd_warshall);
-};
-
-int *calculate_communities_johnson_queue(Graph *graph, int quantity_communities){
-    return calculate_communities(graph, quantity_communities, &johnson_queue);
-};
-
-int *calculate_communities_johnson_array(Graph *graph, int quantity_communities){
-    return calculate_communities(graph, quantity_communities, &johnson_array);
-};
-
-int *calculate_communities_nbfs(Graph *graph, int quantity_communities){
-    return calculate_communities(graph, quantity_communities, &nbfs);
-};
-
-int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquaringResult *(*func)(Graph *graph)){
-    ResultShortestPath *shortest_path_result;
-    int **quantity_shortest_path_in_edge;
-    int *communities2nodes;
-    int numbers_communities;
-    Arc *arc;
-    do{
-        shortest_path_result = (ResultShortestPath *)(*func)(graph);
-        quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(shortest_path_result->predecessor, graph->numbers_nodes);
-        communities2nodes = calculate_communities(shortest_path_result->distance, graph->numbers_nodes);
-        numbers_communities = get_max_community(communities2nodes, graph->numbers_nodes);
-        if(numbers_communities < quantity_communities){
-            arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph->numbers_nodes);
-            remove_edge(graph, arc->source, arc->dest);
-            printf("Aresta Removida:%d,%d\n", arc->source, arc->dest);
-            //calculate_distance_after_remove_edge(graph, shortest_path_result, arc, quantity_shortest_path_in_edge);
-        }
-    } while(numbers_communities < quantity_communities);
-    return communities2nodes;
-};
 
 int main(int argc, char *argv[]){
     int source, dest, min_node, max_node;
