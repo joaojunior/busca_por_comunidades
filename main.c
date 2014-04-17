@@ -33,6 +33,7 @@ int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquar
         if(numbers_communities < quantity_communities){
             arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph->numbers_nodes);
             remove_edge(graph, arc->source, arc->dest);
+            printf("Aresta Removida:%d,%d\n", arc->source, arc->dest);
             //calculate_distance_after_remove_edge(graph, shortest_path_result, arc, quantity_shortest_path_in_edge);
         }
     } while(numbers_communities < quantity_communities);
@@ -49,7 +50,7 @@ int main(int argc, char *argv[]){
                 calculate_communities_johnson_array, calculate_communities_nbfs};
     min_node = MAX_WEIGHT;
     max_node = -1;
-    if(argc == 3){
+    if(argc == 4){
         arq = fopen(argv[1], "r");
         if(arq == NULL)
                 printf("Erro, nao foi possivel abrir o arquivo\n");
@@ -75,7 +76,7 @@ int main(int argc, char *argv[]){
             dest = dequeue(&nodes);
             insert_edge(&graph, source - min_node, dest - min_node, 1);
         }
-        communities2nodes = v[atoi(argv[2])](&graph, 4);
+        communities2nodes = v[atoi(argv[3])](&graph, atoi(argv[2]));
         for(int i = 0; i < graph.numbers_nodes; i++)
             printf("%d %d\n", i + min_node, communities2nodes[i]);
     }
