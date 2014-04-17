@@ -43,11 +43,10 @@ int *calculate_communities(Graph *graph, int quantity_communities, RepeatedSquar
 int main(int argc, char *argv[]){
     int source, dest, min_node, max_node;
     int *communities2nodes;
+    int method, quantity_communities;
     Queue nodes;
     Graph graph;
     FILE *arq;
-    Func v[5] = {calculate_communities_repeated_square, calculate_communities_floyd_warshall, calculate_communities_johnson_queue, 
-                calculate_communities_johnson_array, calculate_communities_nbfs};
     min_node = MAX_WEIGHT;
     max_node = -1;
     if(argc == 4){
@@ -76,7 +75,28 @@ int main(int argc, char *argv[]){
             dest = dequeue(&nodes);
             insert_edge(&graph, source - min_node, dest - min_node, 1);
         }
-        communities2nodes = v[atoi(argv[3])](&graph, atoi(argv[2]));
+        method = atoi(argv[3]);
+        quantity_communities = atoi(argv[2]);
+        switch(method){
+            case 0:
+                communities2nodes = calculate_communities_repeated_square(&graph, quantity_communities);
+                break;
+            case 1:
+                communities2nodes = calculate_communities_floyd_warshall(&graph, quantity_communities);
+                break;
+            case 2:
+                communities2nodes = calculate_communities_johnson_queue(&graph, quantity_communities);
+                break;
+            case 3:
+                communities2nodes = calculate_communities_johnson_array(&graph, quantity_communities);
+                break;
+            case 4:
+                communities2nodes = calculate_communities_nbfs(&graph, quantity_communities);
+                break;
+            default:
+                printf("Metodo Invalido");
+                return 0;
+        };
         for(int i = 0; i < graph.numbers_nodes; i++)
             printf("%d %d\n", i + min_node, communities2nodes[i]);
     }

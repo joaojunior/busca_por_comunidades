@@ -84,10 +84,10 @@ def main(name_file, name_file_result, numbers_communities):
     edge_removed, communities = read_solution(name_file_result)
     graph, min_node = read_graph(name_file, edge_removed)
     distance = floyd_warshall(graph)
-    print verify_solution(distance, communities, min_node, numbers_communities)
+    print verify_solution(distance, communities, min_node, numbers_communities), name_file_result
 
 if __name__ == '__main__':
     name_file = sys.argv[1]
-    name_file_result = sys.argv[2]
-    numbers_communities = int(sys.argv[3])
+    numbers_communities = int(sys.argv[2])
+    name_file_result = sys.argv[3]
     main(name_file, name_file_result, numbers_communities)
