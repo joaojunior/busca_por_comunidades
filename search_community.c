@@ -69,7 +69,7 @@ void calculate_distance_after_remove_edge(Graph *graph, ResultShortestPath *resu
         update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes_edge_removed(graph, result, edge2remove, quantity_shortest_path_in_edge);
     }
     quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest] = 0;
-    quantity_shortest_path_in_edge[edge2remove->dest][edge2remove->source] = quantity_shortest_path_in_edge[edge2remove->source][edge2remove->dest];
+    quantity_shortest_path_in_edge[edge2remove->dest][edge2remove->source] = 0;
 };
 
 void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edge_removed(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge, BFSResult *result_bfs){
@@ -92,7 +92,7 @@ void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edg
     difference = result_bfs->distance[edge2remove->dest] - result->distance[edge2remove->source][edge2remove->dest];
     for(int i = 0; i < graph->numbers_nodes; i++){
         for(int j = i + 1; j < graph->numbers_nodes; j++){
-            if((edge2remove->source != i or edge2remove->dest != j)){
+            if((edge2remove->source != i or edge2remove->dest != j) and (result->distance[i][j] != MAX_WEIGHT)){
                 shortest_path = get_shortest_path(result->predecessor, i, j);
                 if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
                     enqueue(&nodes_before_arc_removed, i);
@@ -105,7 +105,7 @@ void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edg
     }
     while(not empty(&nodes_before_arc_removed)){
         source = dequeue(&nodes_before_arc_removed);
-        result->predecessor[source][edge2remove->dest] = result_bfs->predecessor[edge2remove->dest];;
+        result->predecessor[source][edge2remove->dest] = result_bfs->predecessor[edge2remove->dest];
     }
     while(not empty(&nodes_after_arc_removed)){
         source = dequeue(&nodes_after_arc_removed);
@@ -113,16 +113,16 @@ void update_distance_after_remove_edge_and_exist_shortest_path_between_nodes_edg
     }
     result->distance[edge2remove->source][edge2remove->dest] = result_bfs->distance[edge2remove->dest];
     result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
-    result->predecessor[edge2remove->source][edge2remove->dest] = result_bfs->predecessor[edge2remove->dest];;
+    result->predecessor[edge2remove->source][edge2remove->dest] = result_bfs->predecessor[edge2remove->dest];
     result->predecessor[edge2remove->dest][edge2remove->source] = node_before_source_removed;
 };
 
 void update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes_edge_removed(Graph *graph, ResultShortestPath *result, Arc *edge2remove, int **quantity_shortest_path_in_edge){
     int source, dest;
-    Queue *shortest_path, nodes_before_arc_removed, nodes_after_arc_removed;
+    Queue *shortest_path, nodes_before_arc_removed, nodes_after_arc_removed, aux;
     for(int i = 0; i < graph->numbers_nodes; i++){
         for(int j = i + 1; j < graph->numbers_nodes; j++){
-            if((edge2remove->source != i or edge2remove->dest != j)){
+            if((edge2remove->source != i or edge2remove->dest != j) and (result->distance[i][j] != MAX_WEIGHT)){
                 shortest_path = get_shortest_path(result->predecessor, i, j);
                 if(path_use_arc(shortest_path, edge2remove->source, edge2remove->dest)){
                     source = dequeue(shortest_path);
@@ -140,16 +140,21 @@ void update_distance_after_remove_edge_and_not_exist_shortest_path_between_nodes
     }
     while(not empty(&nodes_before_arc_removed)){
         source = dequeue(&nodes_before_arc_removed);
-        dest = dequeue(&nodes_after_arc_removed);
-        result->predecessor[source][dest] = PREDECESSOR_NULL;
-        result->predecessor[dest][source] = result->predecessor[source][dest];
-        result->distance[source][dest] = MAX_WEIGHT;
-        result->distance[dest][source] = result->distance[source][dest];
+        while(not empty(&nodes_after_arc_removed)){
+            dest = dequeue(&nodes_after_arc_removed);
+            result->predecessor[source][dest] = PREDECESSOR_NULL;
+            result->predecessor[dest][source] = PREDECESSOR_NULL;
+            result->distance[source][dest] = MAX_WEIGHT;
+            result->distance[dest][source] = MAX_WEIGHT;
+            enqueue(&aux, dest);
+        }
+        while(not empty(&aux))
+            enqueue(&nodes_after_arc_removed, dequeue(&aux));
     }
     result->distance[edge2remove->source][edge2remove->dest] = MAX_WEIGHT;
-    result->distance[edge2remove->dest][edge2remove->source] = result->distance[edge2remove->source][edge2remove->dest];
+    result->distance[edge2remove->dest][edge2remove->source] = MAX_WEIGHT;
     result->predecessor[edge2remove->source][edge2remove->dest] = PREDECESSOR_NULL;
-    result->predecessor[edge2remove->dest][edge2remove->source] = result->predecessor[edge2remove->source][edge2remove->dest];
+    result->predecessor[edge2remove->dest][edge2remove->source] = PREDECESSOR_NULL;
 };
 
 Queue *get_shortest_path(int **predecessor, int source, int dest){
@@ -217,15 +222,16 @@ int *calculate_communities(Graph *graph, int quantity_communities, ResultShortes
     int numbers_communities;
     Arc *arc;
     shortest_path_result = (ResultShortestPath *)(*func)(graph);
-    quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(shortest_path_result->predecessor, graph->numbers_nodes);
     do{
+        quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(shortest_path_result->predecessor, graph->numbers_nodes);
         communities2nodes = calculate_communities(shortest_path_result->distance, graph->numbers_nodes);
         numbers_communities = get_max_community(communities2nodes, graph->numbers_nodes);
         if(numbers_communities < quantity_communities){
             arc = get_arc_with_bigger_weight(quantity_shortest_path_in_edge, graph->numbers_nodes);
             remove_edge(graph, arc->source, arc->dest);
             printf("Aresta Removida:%d,%d\n", arc->source, arc->dest);
-            calculate_distance_after_remove_edge(graph, shortest_path_result, arc, quantity_shortest_path_in_edge);
+            //calculate_distance_after_remove_edge(graph, shortest_path_result, arc, quantity_shortest_path_in_edge);
+            shortest_path_result = floyd_warshall(graph);
         }
     } while(numbers_communities < quantity_communities);
     return communities2nodes;
