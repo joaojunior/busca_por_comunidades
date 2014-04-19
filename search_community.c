@@ -221,8 +221,8 @@ int *calculate_communities(Graph *graph, int quantity_communities, ResultShortes
     int *communities2nodes;
     int numbers_communities;
     Arc *arc;
-    shortest_path_result = (ResultShortestPath *)(*func)(graph);
     do{
+        shortest_path_result = (ResultShortestPath *)(*func)(graph);
         quantity_shortest_path_in_edge = calculate_quantity_shortest_path_in_edges(shortest_path_result->predecessor, graph->numbers_nodes);
         communities2nodes = calculate_communities(shortest_path_result->distance, graph->numbers_nodes);
         numbers_communities = get_max_community(communities2nodes, graph->numbers_nodes);
@@ -231,7 +231,7 @@ int *calculate_communities(Graph *graph, int quantity_communities, ResultShortes
             remove_edge(graph, arc->source, arc->dest);
             printf("Aresta Removida:%d,%d\n", arc->source, arc->dest);
             //calculate_distance_after_remove_edge(graph, shortest_path_result, arc, quantity_shortest_path_in_edge);
-            shortest_path_result = floyd_warshall(graph);
+            //shortest_path_result = floyd_warshall(graph);
         }
     } while(numbers_communities < quantity_communities);
     return communities2nodes;
