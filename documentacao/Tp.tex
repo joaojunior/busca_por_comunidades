@@ -1,0 +1,114 @@
+\documentclass{proc}
+
+\usepackage{edbkps}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage{subfig}
+%%\usepackage[lined,boxed,commentsnumbered, linesnumbered]{algorithm2e}
+\usepackage[lined,boxed,commentsnumbered, linesnumbered, portuguese]{algorithm2e}
+
+
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{0}
+\let\footnote\savefootnote
+\let\footnotetext\savefootnotetext
+\let\footnoterule\savefootnoterule
+\normallatexbib
+\makeatletter
+\renewcommand{\@ptsize}{0}
+\makeatother
+
+%%%%%
+%% If you use a font encoding package, please enter it here, i.e.,
+\usepackage{t1enc}
+
+
+%%%%%
+% Style for inserting .eps files and rotating illustrations or tables
+
+% possible options for graphicx:
+% [dvips], [xdvi], [dvipdf], [dvipsone], [dviwindo], [emtex], [dviwin],
+% [pctexps],  [pctexwin],  [pctexhp],  [pctex32], [truetex], [tcidvi],
+% [oztex], [textures]
+
+\usepackage[dvips]{graphicx}
+\usepackage[x11names, rgb]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\articletitle[Comunidades em Grafos]
+{Comunidades em Grafos}
+
+\author{João C. Abreu\altaffilmark{1}}
+
+\altaffiltext{1}{Universidade Federal de Minas Gerais, DCC, \\
+Avenida Antônio Carlos 6627, Belo Horizonte, Brazil,\\
+\email{joao.junior@dcc.ufmg.br}}
+
+\anxx{João C. Abreu Jr.,Universidade Federal de Minas Gerais\,
+Avenida Antônio Carlos 6627\, Belo Horizonte\, Brasil\,
+\emailfont{joao.junior@dcc.ufmg.br}}
+
+\begin{abstract}
+Esse trabalho apresenta o problema de calcular comunidades e cinco algoritmos exatos para a resolução desse problema.
+
+\end{abstract}
+
+\begin{keywords}
+\inx{Comunidades em Grafo}, \inx{Centralidade}, \inx{betweenness}
+\end{keywords}
+
+\doublespacing
+
+\section{Introdução}
+\label{sec:intro}
+
+Seja um grafo $G = (V,E)$, onde $V$ é o conjunto de vértices e $E$ é o conjunto de arestas, com a cardinalidade $|V| = n$ e 
+$|E| = m$. O peso de cada aresta $(i, j) \in E$ é dado pela função $w(i, j) = 1, \forall (i, j) \in E$. A
+centralidade (do inglês \emph{betweenness}) de uma aresta $(i, j) \in E$ é definida como a quantidade de caminhos mínimos que utilizam
+a aresta $(i, j) \in E$. O problema de encontrar $k$ comunidades em um grafo $G$ pode ser visto como um problema de se 
+retirar as arestas com maior centralidade no grafo até possuir $k$ componentes conexas nesse grafo.
+O Objetivo desse trabalho é comparar cinco algoritmos exatos para o problema de cálculos de comunidade. 
+A seção \ref{sec:estrutura_dados} apresenta as estruturas de dados utilizadas nesse trabalho, a seção \ref{sec:algoritmos}
+apresenta os cinco algoritmos exatos para o problema de cálculos de comunidades, a seção \ref{sec:experimentos}
+apresenta os experimentos computacionais desse trabalho.
+
+
+Para se encontrar $k$ comunidades em um grafo, com $k < m$, calcula-se a centralidade de cada 
+aresta $(i, j) \in E$ e retira-se do grafo a aresta $(i, j) \in E$ que possuir a maior centralidade. Após isso a quantidade de componentes conexas do grafo é verificada e se for igual a $k$ o problema está resolvida, caso contrário o cálculo de centralidades
+deve ser novamente efetuado e a aresta $(i, j) \in E$ com maior centralidade é removida do grafo.
+
+Dados $M=\{1,...,m\}$ e $N=\{1,...,n\}$ dois conjuntos. Seja $M_1$, $M_2$, ..., $M_n$ uma coleção de subconjuntos 
+de $M$ com um custo $c_j$ associado a cada um desses subconjuntos. Uma cobertura de $M$ é um subconjunto 
+$F \subset N$ tal que $\cup_{j \in F} M_j = M$. O problema que consiste em encontrar esse subconjunto $F \subset N$ de custo mínimo
+é denominado o problema Set Covering($SCP$). Segundo Balas\cite{balas89} esse problema é $np$-$dificil$ e não se conhece uma boa caracterização do politopo desse
+problema. \\
+
+Todo código fonte produzido por esse trabalho pode ser obtido no endereço eletrônico: $https://github.com/joaojunior/feixo1\_2scp$
+
+\input{estrutura_dados.tex}
+\input{algoritmos.tex}
+\input{experimentos.tex}
+
+\bibliographystyle{plain}
+\chapbblname{tp}  % The name of the .bbl file, what is normally the name of your .tex file.
+\bibliography{tp} %\chapbibliography{gow}
+
+\end{document}
+
+
+
+
+
+% LocalWords:  comeca ij kj ji lll hardcoded eq ranqueamento recuperável RRSP
+% LocalWords:  Recuperável Rent Minmax Regret Single Pair MSP SPP Cplex
