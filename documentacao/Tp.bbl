@@ -1,3 +1,33 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{cormen3ndqueuemin}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms (pp. 162-164)}.
+\newblock MIT Press, 3nd edition, 2009.
+
+\bibitem{cormen3ndbfs}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms (pp. 594-601)}.
+\newblock MIT Press, 3nd edition, 2009.
+
+\bibitem{cormen3nddijkstra}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms (pp. 658-662)}.
+\newblock MIT Press, 3nd edition, 2009.
+
+\bibitem{cormen3ndFaster}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms (pp. 684-691)}.
+\newblock MIT Press, 3nd edition, 2009.
+
+\bibitem{cormen3ndFloydwarshall}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms (pp. 693-697)}.
+\newblock MIT Press, 3nd edition, 2009.
+
+\bibitem{cormen3ndjohnson}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms (pp. 700-704)}.
+\newblock MIT Press, 3nd edition, 2009.
 
 \end{thebibliography}

@@ -1,9 +1,30 @@
 \section{Experimentos Computacionais}\label{sec:experimentos} 
 Os experimentos computacionais foram executados em uma máquina Intel Dual-Core de 2.81 GHz de clock e
-2GB de memória RAM, rodando o sistema operacional Linux. O modelo matemático apresentado em \ref{sec:modelagem} foi implementado
+2GB de memória RAM, rodando o sistema operacional Linux. Os algoritmos das seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} foram implementados na 
+linguagem de programação c e compilados com o compilador gcc na versão 4.8.2. A tabela \ref{table:algoritmos} apresenta esses cinco algoritmos. Na coluna 1 está o nome que o algoritmo vai assumir aqui, a coluna 2 é a referência da seção que o algoritmo foi apresentado,
+a coluna 3 mostra o nome do arquivo de especificações do algoritmo e a coluna 4 apresenta o nome do arquivo com o código fonte do 
+algoritmo.
+
+\begin{table}[htbp]
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+      Algoritmo                & Seção                    & Arquivo .h              & Arquivo .c            \\ \hline
+      kc\_faster               & \ref{sec:faster}         & repeated\_squaring.h    & repeated\_squaring.c  \\ \hline
+      kc\_floydwarshall        & \ref{sec:floydwarshall}  & floyd\_warshall.h       & floyd\_warshall.c     \\ \hline
+      kc\_johnson\_min\_queue    & \ref{sec:johnson_queue}  & johnson.h               & johnson.c           \\ \hline
+      kc\_johnson\_array        & \ref{sec:johnson_vector} & johnson.h               & johnson.c            \\ \hline
+      kc\_nbfs                 & \ref{sec:bfs}            & bfs.h                   & bfs.c                 \\ \hline
+  \end{tabular}
+\caption{Algoritmos exatos para o problema de encontradar k comunidades em um grafo não direcionado e não ponderado}
+\label{table:algoritmos}
+\end{center}
+\end{table}
+
+O modelo matemático apresentado em \ref{sec:modelagem} foi implementado
 no Ilog CPLEX 12.5.1 e o algoritmo da seção \ref{sec:algoritmo} foi implementado
 em Python 2.7, sendo que o otimizador utilizado para resolver os modelos lineares presente nesse algoritmo foi o Ilog CPLEX 12.5.1.
-Foram utilizados quatro conjuntos de instâncias de testes nos experimentos computacionais e essas instâncias foram retiradas de \cite{Beasley90}.
+Foram utilizados quatro conjuntos de instâncias de testes nos experimentos computacionais e essas instâncias foram retiradas de \cite{cormen3ndFaster}.
 Nessas instâncias de testes cada linha da matriz de incidência $A$ é coberta por pelo menos duas colunas e cada coluna cobre pelo menos uma linha. O
 custo $c_j$ de cada coluna $j$ está entre $[1,100]$. A tabela \ref{table:instancias} resume esses conjuntos de instâncias. A coluna 1 dessa tabela 
 representa o identificador do conjunto da instância de teste,

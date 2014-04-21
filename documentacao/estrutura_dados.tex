@@ -8,14 +8,16 @@ mínimas.
 
 Um grafo $G = (V, E)$ vai ser representado por uma matriz $n$ x $n$, onde $n = |V|$. Quando existe uma 
 aresta $(i, j) \in E$ o valor armazenado na posição $i, j$ da matriz será $1$ e quando a posição 
-$i, j$ de uma matriz não corresponder a uma aresta será armazenado o valor do maior inteiro possível.
+$i, j$ da matriz não corresponder a uma aresta será armazenado o valor do maior inteiro possível.
 Assim a ordem de complexidade da quantidade de memória utilizada para representar um grafo vai ser igual a $\theta(n ^ 2)$ e 
 a ordem de complexidade para verificar se uma aresta existe no grafo será $O(1)$. A estrutura de dados grafo está
 definida no arquivo graph.h e sua implementação pode ser obtida no arquivo graph.c.
 
 \subsection{Fila de prioridade Mínima}\label{sec:queue_min}
-A fila de prioridade mínima vai ser representada por um vetor de $n$ elementos. Cada elemento armazena dois inteiros, um
+A fila de prioridade mínima \cite{cormen3ndqueuemin} vai ser representada por um vetor de $n$ elementos. Cada elemento armazena dois inteiros, um
 representa o peso do elemento e o outro a posição na fila de prioridade mínima. Um elemento pode possuir no máximo dois filhos, onde
 o peso do elemento dos filhos é igual ou menor do que o peso do elemento pai. Assim a ordem de complexidade da quantidade
 de memória para armazenar uma fila de prioridade mínima é $\theta(n)$, a ordem de complexidade para se retirar o elemento de menor
-peso da fila e para se diminuir o valor de um peso de um elemento existente na fila é $O(log_2 n)$.
+peso da fila e para se diminuir o valor de um peso de um elemento existente na fila é $O(log_2 n)$. A estrutura de dados fila 
+de prioridade mínima está definida no arquivo min\_priority\_queue.h e sua implementação pode ser 
+obtida no arquivo min\_priority\_queue.c.

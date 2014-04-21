@@ -7,7 +7,7 @@ caminhos mínimos entre todos os pares de vértices $i, j \in V$.
 As seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} 
 analisam a ordem de complexidade dos algoritmos que se diferem do algoritmo genérico apenas pela cálculo de centralidades. As seções 
 \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} 
-apresentam as análises dos algoritmos que calculam a centralidade utilizando, respectivamente, os algoritmos: Faster-All-Pairs-Shortest-Path, Floyd-Warshall, Johnson com fila de prioridades mínimas, Johnson com array e Breadth First Search.
+apresentam as análises dos algoritmos que calculam a centralidade utilizando, respectivamente, os algoritmos: Faster-All-Pairs-Shortest-Path\cite{cormen3ndFaster}, Floyd-Warshall\cite{cormen3ndFloydwarshall}, Johnson com fila de prioridades mínimas\cite{cormen3ndjohnson}, Johnson com array\cite{cormen3ndjohnson} e Breadth First Search\cite{cormen3ndbfs}.
 
 \begin{algorithm}
 \Entrada{Grafo $G = (V, E)$ e número $k$ de comunidades}
@@ -38,7 +38,7 @@ de memória utilizada por esse algoritmo será da ordem de $\theta(n^2)$, que é
 de dados grafo.
 
 \subsection{Johnson com Fila de Prioridades Mínimas}\label{sec:johnson_queue}
-O cálculo de centralidades é feito utilizando o algoritmo de Johnson que utiliza o algoritmo de Dijkstra com fila
+O cálculo de centralidades é feito utilizando o algoritmo de Johnson que utiliza o algoritmo de Dijkstra\cite{cormen3nddijkstra} com fila
 de prioridade mínima. Nesse caso o Algoritmo de Johnson que utiliza o algoritmo de Dijkstra com fila de prioridades mínima
 possui ordem de complexidade igual a $O(nmlog_2n)$. No melhor caso apenas $k$ arestas serão retiradas do grafo e no pior
 caso $m$ arestas serão retiradas do grafo. Assim o algoritmo de cálculo de comunidades utilizando o algoritmo de Johnson terá ordem de complexidade igual a $O(knmlog_2n)$ no melhor caso e $O(nm^2log_2n)$ no pior caso. A quantidade
@@ -46,7 +46,7 @@ de memória utilizada por esse algoritmo será da ordem de $\theta(n^2)$, que é
 de dados grafo.
 
 \subsection{Johnson com Array}\label{sec:johnson_vector}
-O cálculo de centralidades é feito utilizando o algoritmo de Johnson que utiliza o algoritmo de Dijkstra com um array. Nesse caso o Algoritmo de Johnson possui ordem de complexidade igual a $\O(n^3 + nm)$. No melhor caso apenas $k$ arestas serão retiradas do grafo e no pior caso $m$ arestas serão retiradas do grafo. Assim o algoritmo de cálculo de comunidades utilizando o algoritmo de Johnson terá ordem de complexidade igual a $O(k(n^3 + nm))$ no melhor caso e $O(mn^3 + nm^2)$ no pior caso. A quantidade
+O cálculo de centralidades é feito utilizando o algoritmo de Johnson que utiliza o algoritmo de Dijkstra\cite{cormen3nddijkstra} com um array. Nesse caso o Algoritmo de Johnson possui ordem de complexidade igual a $\O(n^3 + nm)$. No melhor caso apenas $k$ arestas serão retiradas do grafo e no pior caso $m$ arestas serão retiradas do grafo. Assim o algoritmo de cálculo de comunidades utilizando o algoritmo de Johnson terá ordem de complexidade igual a $O(k(n^3 + nm))$ no melhor caso e $O(mn^3 + nm^2)$ no pior caso. A quantidade
 de memória utilizada por esse algoritmo será da ordem de $\theta(n^2)$, que é a ordem de utilização de memória dado pela estrutura
 de dados grafo.
 

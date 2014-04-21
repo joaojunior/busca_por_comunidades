@@ -88,11 +88,6 @@ Para se encontrar $k$ comunidades em um grafo, com $k < m$, calcula-se a central
 aresta $(i, j) \in E$ e retira-se do grafo a aresta $(i, j) \in E$ que possuir a maior centralidade. Após isso a quantidade de componentes conexas do grafo é verificada e se for igual a $k$ o problema está resolvida, caso contrário o cálculo de centralidades
 deve ser novamente efetuado e a aresta $(i, j) \in E$ com maior centralidade é removida do grafo.
 
-Dados $M=\{1,...,m\}$ e $N=\{1,...,n\}$ dois conjuntos. Seja $M_1$, $M_2$, ..., $M_n$ uma coleção de subconjuntos 
-de $M$ com um custo $c_j$ associado a cada um desses subconjuntos. Uma cobertura de $M$ é um subconjunto 
-$F \subset N$ tal que $\cup_{j \in F} M_j = M$. O problema que consiste em encontrar esse subconjunto $F \subset N$ de custo mínimo
-é denominado o problema Set Covering($SCP$). Segundo Balas\cite{balas89} esse problema é $np$-$dificil$ e não se conhece uma boa caracterização do politopo desse
-problema. \\
 
 Todo código fonte produzido por esse trabalho pode ser obtido no endereço eletrônico: $https://github.com/joaojunior/feixo1\_2scp$
 
@@ -101,8 +96,8 @@ Todo código fonte produzido por esse trabalho pode ser obtido no endereço elet
 \input{experimentos.tex}
 
 \bibliographystyle{plain}
-\chapbblname{tp}  % The name of the .bbl file, what is normally the name of your .tex file.
-\bibliography{tp} %\chapbibliography{gow}
+%\chapbblname{tp}  % The name of the .bbl file, what is normally the name of your .tex file.
+\bibliography{Tp} %\chapbibliography{gow}
 
 \end{document}
 
