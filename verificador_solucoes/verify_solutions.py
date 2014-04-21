@@ -34,6 +34,7 @@ def read_graph(name_file, edge_removed):
         if dest > max_node:
             max_node = dest
         arcs.append((source, dest))
+        arcs.append((dest, source))
     for arc in arcs:
         source = arc[0] - min_node
         dest = arc[1] - min_node
