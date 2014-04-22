@@ -77,23 +77,22 @@ Seja um grafo $G = (V,E)$, onde $V$ é o conjunto de vértices e $E$ é o conjun
 $|E| = m$. O peso de cada aresta $(i, j) \in E$ é dado pela função $w(i, j) = 1, \forall (i, j) \in E$. A
 centralidade (do inglês \emph{betweenness}) de uma aresta $(i, j) \in E$ é definida como a quantidade de caminhos mínimos que utilizam
 a aresta $(i, j) \in E$. O problema de encontrar $k$ comunidades em um grafo $G$ pode ser visto como um problema de se 
-retirar as arestas com maior centralidade no grafo até possuir $k$ componentes conexas nesse grafo.
-O Objetivo desse trabalho é comparar cinco algoritmos exatos para o problema de cálculos de comunidade. 
-A seção \ref{sec:estrutura_dados} apresenta as estruturas de dados utilizadas nesse trabalho, a seção \ref{sec:algoritmos}
-apresenta os cinco algoritmos exatos para o problema de cálculos de comunidades, a seção \ref{sec:experimentos}
-apresenta os experimentos computacionais desse trabalho.
-
-
-Para se encontrar $k$ comunidades em um grafo, com $k < m$, calcula-se a centralidade de cada 
-aresta $(i, j) \in E$ e retira-se do grafo a aresta $(i, j) \in E$ que possuir a maior centralidade. Após isso a quantidade de componentes conexas do grafo é verificada e se for igual a $k$ o problema está resolvida, caso contrário o cálculo de centralidades
+retirar as arestas com maior centralidade no grafo até possuir $k$ componentes conexas nesse grafo. Para se encontrar $k$ comunidades em um grafo, com $k \leq n$, calcula-se a centralidade de cada 
+aresta $(i, j) \in E$ e retira-se do grafo a aresta $(i, j) \in E$ que possuir a maior centralidade. Após isso a quantidade de componentes conexas do grafo é verificada e se for igual a $k$ o problema está resolvido, caso contrário o cálculo de centralidades
 deve ser novamente efetuado e a aresta $(i, j) \in E$ com maior centralidade é removida do grafo.
 
+O objetivo desse trabalho é comparar cinco algoritmos exatos para o problema de cálculos de comunidade. 
+A seção \ref{sec:estrutura_dados} apresenta as estruturas de dados utilizadas nesse trabalho, a seção \ref{sec:algoritmos}
+apresenta os cinco algoritmos exatos para o problema de cálculos de comunidades, a seção \ref{sec:experimentos}
+apresenta os experimentos computacionais desse trabalho e a seção \ref{sec:consideracoes} apresenta as considerações finais.
 
-Todo código fonte produzido por esse trabalho pode ser obtido no endereço eletrônico: $https://github.com/joaojunior/feixo1\_2scp$
+
+
 
 \input{estrutura_dados.tex}
 \input{algoritmos.tex}
 \input{experimentos.tex}
+\input{consideracoes.tex}
 
 \bibliographystyle{plain}
 %\chapbblname{tp}  % The name of the .bbl file, what is normally the name of your .tex file.

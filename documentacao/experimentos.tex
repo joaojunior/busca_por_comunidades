@@ -21,118 +21,104 @@ algoritmo.
 \end{center}
 \end{table}
 
-O modelo matemático apresentado em \ref{sec:modelagem} foi implementado
-no Ilog CPLEX 12.5.1 e o algoritmo da seção \ref{sec:algoritmo} foi implementado
-em Python 2.7, sendo que o otimizador utilizado para resolver os modelos lineares presente nesse algoritmo foi o Ilog CPLEX 12.5.1.
-Foram utilizados quatro conjuntos de instâncias de testes nos experimentos computacionais e essas instâncias foram retiradas de \cite{cormen3ndFaster}.
-Nessas instâncias de testes cada linha da matriz de incidência $A$ é coberta por pelo menos duas colunas e cada coluna cobre pelo menos uma linha. O
-custo $c_j$ de cada coluna $j$ está entre $[1,100]$. A tabela \ref{table:instancias} resume esses conjuntos de instâncias. A coluna 1 dessa tabela 
-representa o identificador do conjunto da instância de teste,
-as colunas 2 e 3 mostram, respectivamente, o número $m$ de linhas e $n$ de colunas da matriz de incidência $A$. A coluna 4 representa
-a densidade da matriz $A$ que é calculado pelo quantidade de 1's dessa matriz dividido pela quantidade total de elementos de $A$ que é igual a 
-$mn$ e a coluna 5 mostra a quantidade de problemas em cada conjunto. Os dez problemas do conjunto 4 são nomeados como scp41-scp410, os cinco
-problemas do conjunto 6 são nomeados como scp61-scp65, e os problemas do conjunto A e B são nomeados respectivamente como scpa1-scpa5
-e scpb1-scpb5.
+Foram utilizados cinco conjuntos de instâncias de testes nos experimentos computacionais, três dessas instâncias foram retiradas de \cite{files_test} e as outras duas foram geradas por esse trabalho. As instâncias de teste retiradas de \cite{files_test}
+foram: karate, lesmis e adjnoun. A instância karate representa uma rede social de 34 membros de um clube de karate, a instância
+lesmis representa o número de ocorrências de determinados caracteres em um livro e a instância adjnoun representa
+o número de ocorrências de palavras em um livro. As instâncias geradas vão ser chamadas de path e completo. Essas instâncias
+foram geradas pois vão explorar o melhor e o pior caso dos algoritmos apresentados. Uma instância
+path é um grafo onde o nó $i \in V$ está ligado ao nó $i+1 \in V$ formando apenas um caminho simples. Foram gerados três 
+instâncias path com 50, 100 e 200 nós.  Uma instância completo é um grafo completo, ou seja, existe uma aresta
+entre cada par de nós do grafo. Foram geradas três instâncias completo com 50, 100 e 200 nós.
+A tabela \ref{table:instancias} apresenta todas as instâncias de teste. Na coluna 1 dessa tabela está o nome da instância,
+a coluna 2 apresenta o número de nós da instância e a coluna 3 mostra o número de aresta de cada instância.
 
 \begin{table}[htbp]
 \begin{center}
-  \begin{tabular}{|c|r|r|r|r|}
+  \begin{tabular}{|c|c|c|}
     \hline
-      Conjunto & Linhas   & Colunas & Densidade   & Problemas\\ \hline
-      4        & 200      & 1000    & 2           & 10 \\ \hline
-      6        & 200      & 1000    & 5           & 5 \\ \hline
-      A        & 300      & 3000    & 2           & 5 \\ \hline
-      B        & 300      & 3000    & 5           & 5 \\ \hline
+      Instância                & \# Nós                   & \# Arestas \\ \hline
+      karate                   & 34                       & 78 \\ \hline
+      lesmis                   & 77                       & 254 \\ \hline
+      adjnoun                  & 112                      & 425 \\ \hline
+      path\_50                 & 50                       & 49 \\ \hline
+      path\_100                & 100                      & 99 \\ \hline
+      path\_200                & 200                      & 199 \\ \hline
+      completo\_50             & 50                       & 2450 \\ \hline
+      completo\_100            & 100                      & 9900 \\ \hline
+      completo\_200            & 200                      & 39800 \\ \hline
   \end{tabular}
-\caption{Detalhes das instâncias de testes utilizadas}
+\caption{Características das instâncias de testes}
 \label{table:instancias}
 \end{center}
 \end{table}
-No experimento desse trabalho foi comparado a performance do modelo proposto na seção \ref{sec:modelagem}, que será 
-chamado aqui de $IP$, com o algoritmo proposto na seção \ref{sec:algoritmo}, que será chamado $ARank1$.
-O modelo $IP$ foi executado através do CPLEX com todos os parâmetros default. O modelo presente no algoritmo $ARank1$
-foi executado pelo CPLEX com um tempo máximo de 120 segundos e foi setado para que o CPLEX encontra-se no máximo cinco soluções
-inteiras, explorando no máximo 50000 nós na árvore de Branch-and-Bound, encontra-se soluções com um valor objetivo sempre inferior a $-0.05$
-e a ênfase na busca de soluções foi setado 4. O modelo $IP$ e o algoritmo $ARank1$ foram executados com um tempo de execução máximo de 7200 segundos. \\
-A tabela \ref{table:resultados4e6} apresenta os resultados obtidos para o conjuntos de instância 4 e 6 e a tabela
-\ref{table:resultadosaeb} apresenta os resultados para o conjuntos de instância A e B. Nessas tabelas a
-coluna 1 mostra o nome da instância de teste, as colunas 2 e 3 são resultados referentes ao modelo $IP$ e as colunas
-4,5,6 e 7 são resultados referentes ao algoritmo $ARank1$. A coluna 2 apresenta o custo da solução obtido pela
-modelo $IP$ e a coluna 3 apresenta o tempo consumido para encontrar essa solução. A coluna 4 mostra o valor da
-relaxação linear obtida para o $SCP$ no início do algoritmo $ARank1$, a coluna 5 apresenta o custo da solução 
-obtido após procurar e inserir os cortes de Chvátal-Gomory de rank 1, a coluna 6 traz a quantidade de cortes que o algoritmo
-$ARank1$ conseguiu adicionar e a coluna 7 mostra o tempo consumido pelo algoritmo $ARank1$.\\
-Para todas as instâncias do conjunto 4 e 6 o CPLEX conseguiu encontrar soluções ótimas em um tempo muito pequeno, conforme
-pode ser observado pelas colunas 2 e 3 da tabela \ref{table:resultados4e6}. Para as instâncias scp41, scp42, scp43, scp45
-e scp47 nenhum corte é possível de ser adicionado, pois a relaxação linear já provém uma solução inteira ótima para o $SCP$, conforme
-pode ser observado na coluna 4, linhas 1,2,3,5 e 7 da tabela \ref{table:resultados4e6}. Para todas as outras instâncias
-desse conjunto o algoritmo $ARank1$ conseguiu adicionar cortes de Chvátal-Gomory de rank-1, como pode ser observado
-pelas linhas 4,6,8,9,10,11,12,13,14 e 15 na coluna 6 da tabela \ref{table:resultados4e6}. Para esse conjunto, a única 
-instância que o algoritmo $ARank1$ conseguiu resolver na otimalidade foi a instância scp410, conforme pode ser observado
-pela coluna 5, linha 10 da tabela \ref{table:resultados4e6}. Nessa mesma tabela, retirando-se as instâncias que possuem
-uma relaxação linear inteira,  pode-se observar que o tempo gasto pelo algoritmo $ARank1$ foi bastane alto, conforme a coluna
-7.
 
-\begin{table}[htbp]
-\begin{center}
-  \begin{tabular}{|c|r|r|r|r|r|r|}
-    \hline
-      Instância & \multicolumn{2}{|c|}{$IP$} & \multicolumn{4}{|c|}{$ARank1$}\\
-                & Custo Solução    & Tempo(s)   & Relaxação Linear  & Custo Solução   & \#Cortes & Tempo(s)      \\ \hline
-      scp41     & 429              & 0.84      & 429.00            & 429.00          & 0        & 0.00       \\ \hline
-      scp42     & 512              & 0.85      & 512.00            & 512.00          & 0        & 0.00       \\ \hline
-      scp43     & 516              & 0.86      & 516.00            & 516.00          & 0        & 0.00       \\ \hline
-      scp44     & 494              & 0.86      & 494.00            & 494.00          & 6        & 863.71     \\ \hline
-      scp45     & 512              & 0.85      & 512.00            & 512.00          & 0        & 0.00       \\ \hline
-      scp46     & 560              & 0.89      & 557.25            & 558.94          & 32       & 1038.07    \\ \hline
-      scp47     & 430              & 0.83      & 430.00            & 430.00          & 0        & 0.00       \\ \hline
-      scp48     & 492              & 0.97      & 488.67            & 490.67          & 65       & 6118.55    \\ \hline
-      scp49     & 641              & 0.90      & 638.54            & 639.87          & 75       & 8054.13    \\ \hline
-      scp410    & 514              & 0.90      & 513.50            & 514.00          & 14       & 1349.04    \\ \hline
-      scp61     & 138              & 1.23      & 133.14            & 133.53          & 52       & 7267.44    \\ \hline
-      scp62     & 146              & 2.06      & 140.46            & 141.15          & 50       & 7284.06    \\ \hline
-      scp63     & 145              & 1.26      & 140.13            & 141.46          & 72       & 7289.33    \\ \hline
-      scp64     & 131              & 0.96      & 129.00            & 130.08          & 77       & 7251.63    \\ \hline
-      scp65     & 161              & 1.94      & 153.35            & 154.13          & 50       & 7370.46    \\ \hline
-  \end{tabular}
-\caption{Comparação entre os custos da solução e tempos obtidos entre o modelo $IP$ e o algoritmo $ARank1$ para as instâncias do conjunto 4 e 6.}
-\label{table:resultados4e6}
-\end{center}
-\end{table}
+No primeiro experimento foi comparado a performance dos algoritmos das seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} nas instâncias retiradas de \cite{files_test}.
+A figura \ref{karate} mostra os resultados obtidos com a execução dos algoritmos para a instância karate. Essa figura mostra
+que o algoritmo mais rápido foi o de kc\_nbfs seguido do kc\_floydwarshall, essa figura também mostra que a medida
+que o número de comunidades aumenta o algoritmo kc\_faster passa a ser o mais lento. O algoritmo kc\_johnson\_min\_queue
+passa a ser mais rápido que o algoritmo kc\_johnson\_array com o aumento do número de comunidades.
 
-Para todas as instâncias do conjunto A e B o CPLEX conseguiu encontrar soluções ótimas em um tempo pequeno, conforme
-pode ser observado pelas colunas 2 e 3 da tabela \ref{table:resultadosaeb}. Para essas instâncias o algoritmo {$ARank1$}
-não conseguiu encontrar a solução ótima para nenhuma delas, conforme pode ser observado pela coluna 5 da 
-tabela \ref{table:resultadosaeb}. O algoritmo {$ARank1$} só conseguiu encontrar cortes de Chvátal-Gomory de rank-1 
-para as instâncias scpa3, scpa5 e scpb5, conforme pode ser observado pela coluna 7 e linhas 3,5 e 10 da 
-tabela \ref{table:resultadosaeb}. O tempo máximo de 120 segundos para o modelo de separação no algoritmo {$ARank1$}
-pode ter sido a causa de não encontrar cortes válidos para as demais instâncias. Para a instância scpa3, mesmo
-adicionando cortes válidos a solução encontrada possui o mesmo custo da solução na relaxação linear, conforme pode 
-ser observado, comparando-se a coluna 4 e 5 da linha 3, indicando degenerações nas soluções.
+\begin{figure}
+\centering
+\includegraphics[width=6in]{karate.png}
+\caption{Comparação de tempo em segundos pelo número de comunidades:2, 4, 8, 16 e 32 para os cinco algoritmos apresentados nas seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} e excutado na instância de teste karate}
+\label{karate}
+\end{figure}
 
-\begin{table}[htbp]
-\begin{center}
-  \begin{tabular}{|c|r|r|r|r|r|r|}
-    \hline
-      Instância & \multicolumn{2}{|c|}{$IP$} & \multicolumn{4}{|c|}{$ARank1$}\\
-                & Custo Solução    & Tempo(s)   & Relaxação Linear  & Custo Solução   & \#Cortes & Tempo(s)      \\ \hline
-      scpa1     & 253              & 9.95      & 246.84          & 246.84          & 0          & 251.75  \\ \hline
-      scpa2     & 252              & 9.87      & 247.50          & 247.50          & 0          & 252.95  \\ \hline
-      scpa3     & 232              & 9.48      & 228.00          & 228.00          & 6          & 1685.40 \\ \hline
-      scpa4     & 234              & 8.76      & 231.40          & 231.40          & 0          & 248.60  \\ \hline
-      scpa5     & 236              & 8.64      & 234.89          & 235.02          & 25         & 5826.96 \\ \hline
-      scpb1     & 69               & 10.08     & 64.54           & 64.54           & 0          & 246.67  \\ \hline
-      scpb2     & 76               & 10.87     & 69.30           & 69.30           & 0          & 256.28  \\ \hline
-      scpb3     & 80               & 9.67      & 74.16           & 74.16           & 0          & 252.03  \\ \hline
-      scpb4     & 79               & 11.52     & 71.22           & 71.22           & 0          & 250.54  \\ \hline
-      scpb5     & 72               & 9.86      & 67.67           & 67.67           & 2          & 741.67  \\ \hline
-  \end{tabular}
-\caption{Comparação entre os custos da solução e tempos obtidos entre o modelo $IP$ e o algoritmo $ARank1$ para as instâncias do conjunto A e B.}
-\label{table:resultadosaeb}
-\end{center}
-\end{table}
+A figura \ref{lesmis} mostra os resultados obtidos com a execução dos algoritmos para a instância lesmis. Essa figura mostra
+que o algoritmo mais rápido foi o de kc\_nbfs seguido do kc\_floydwarshall, essa figura também mostra que a medida
+que o número de comunidades aumenta o algoritmo kc\_faster passa a ser o mais lento. O algoritmo kc\_johnson\_min\_queue
+passa a ser mais rápido que o algoritmo kc\_johnson\_array com o aumento do número de comunidades.
 
+\begin{figure}
+\centering
+\includegraphics[width=6in]{lesmis.png}
+\caption{Comparação de tempo em segundos pelo número de comunidades:2, 4, 8, 16, 32 e 64 para os cinco algoritmos apresentados nas seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} e excutado na instância de teste lesmis}
+\label{lesmis}
+\end{figure}
 
+A figura \ref{adjnoun} mostra os resultados obtidos com a execução dos algoritmos para a instância adjnoun. Essa figura mostra
+que o algoritmo mais rápido foi o de kc\_nbfs seguido do kc\_floydwarshall, essa figura também mostra que a medida
+que o número de comunidades aumenta o algoritmo kc\_faster passa a ser o mais lento. O algoritmo kc\_johnson\_min\_queue
+passa a ser mais rápido que o algoritmo kc\_johnson\_array com o aumento do número de comunidades.
+
+\begin{figure}
+\centering
+\includegraphics[width=6in]{adjnoun.png}
+\caption{Comparação de tempo em segundos pelo número de comunidades:2, 4, 8, 16, 32 e 64 para os cinco algoritmos apresentados nas seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} e excutado na instância de teste adjnoun}
+\label{adjnoun}
+\end{figure}
+
+No segundo experimento foi comparado a performance dos algoritmos das seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} no melhor e pior caso. No melhor caso, os algoritmos foram
+executados nas instâncias path50, path100 e path200 com o número de comunidades $k$ igual a 50, 100 e 200 respectivamente, assim
+todas as $k - 1$ arestas do grafo precisaram ser retiradas. No pior caso, os algoritmos foram executados nas instâncias completo50, completo100 e completo200 com número de comunidades $k$ igual a 50, 100 e 200 respectivamente, obrigando a
+retirada de todas as arestas do grafo. Para comparar os algoritmos, o tempo de execução de cada um foi dividido pelo tempo 
+de execução do algoritmo kc\_nbfs que foi o algoritmo que obteve o menor tempo de resposta.
+A figura \ref{path} apresenta os resultados obtidos para as instâncias path50, path100 e path200.  Nessa figura o eixo
+vertical representa o tempo que o algoritmo gastou dividido pelo tempo gasto pelo algoritmo kc\_nbfs e o eixo horizontal
+representa cada uma das instâncias path. Obervando essa figura vemos que o algoritmo kc\_faster é o algoritmo que apresenta os piores resultados e com o aumento do número de arestas no grafo path a razão do tempo gasto por esse algoritmo e o algoritmo kc\_nbfs aumenta muito. O algoritmo kc\_floydwarshall consumiu tempos similares aos tempos do algoritmo kc\_nbfs. O algoritmo
+kc\_johnson\_min\_queue foi mais rápido do que o algoritmo kc\_johnson\_array.
+
+\begin{figure}
+\centering
+\includegraphics[width=6in]{path.png}
+\caption{Comparação da razão do tempo gasto dos algoritmos pelo tempo gasto pelo algoritmo mais rápido nas instâncias path50, path100 e path200}
+\label{path}
+\end{figure}
+
+A figura \ref{completo} apresenta os resultados obtidos para as instâncias completo50, completo100 e completo200.  Nessa figura o eixo vertical representa o tempo que o algoritmo gastou dividido pelo tempo gasto pelo algoritmo kc\_nbfs e o eixo horizontal
+representa cada uma das instâncias completo. Obervando essa figura vemos que o algoritmo kc\_faster é o algoritmo que apresenta os piores resultados e com o aumento do número de arestas no grafo completo a razão do tempo gasto por esse algoritmo e o algoritmo kc\_nbfs aumenta muito. O algoritmo kc\_floydwarshall consumiu tempos similares aos tempos do algoritmo kc\_nbfs. O algoritmo
+kc\_johnson\_min\_queue foi mais rápido do que o algoritmo kc\_johnson\_array.
+
+\begin{figure}
+\centering
+\includegraphics[width=6in]{completo.png}
+\caption{Comparação da razão do tempo gasto dos algoritmos pelo tempo gasto pelo algoritmo mais rápido nas instâncias completo50,
+completo100 e completo200}
+\label{completo}
+\end{figure}
+
+Comparando as figuras \ref{path} e \ref{completo} a razão entre o tempo dos algoritmos e o tempo do algoritmo kc\_nbfs diminui, isso pode ser explicado porque com o aumento do número de arestas no grafo o algoritmo kc\_nbfs tende a ser muito pior.
 
 
 

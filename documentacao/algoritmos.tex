@@ -2,12 +2,11 @@
 Essa seção apresenta um algoritmo genérico para o cálculo de comunidades e análisa a ordem de complexidade de cinco algoritmos baseados nesse algoritmo genérico.
 O Algoritmo \ref{algoritmo_generico} apresenta um algoritmo genérico para o cálculo de comunidades em um grafo $G = (V, E)$.
 Na linha 2 é calculado a centralidade de todas as arestas, o laço das linhas 3 a 6 é repetido até que o número $k$ de comunidades
-é obtido. A linha 4 retira do grafo $G = (V, E)$ a aresta $(i, j) \in E$ que possui a maior centralidade. A linha 5 recalcula os
-caminhos mínimos entre todos os pares de vértices $i, j \in V$.
+é obtido. A linha 4 retira do grafo $G = (V, E)$ a aresta $(i, j) \in E$ que possui a maior centralidade. A linha 5 recalcula a centralidade de todas as arestas.
 As seções \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} 
 analisam a ordem de complexidade dos algoritmos que se diferem do algoritmo genérico apenas pela cálculo de centralidades. As seções 
 \ref{sec:faster}, \ref{sec:floydwarshall}, \ref{sec:johnson_queue}, \ref{sec:johnson_vector} e \ref{sec:bfs} 
-apresentam as análises dos algoritmos que calculam a centralidade utilizando, respectivamente, os algoritmos: Faster-All-Pairs-Shortest-Path\cite{cormen3ndFaster}, Floyd-Warshall\cite{cormen3ndFloydwarshall}, Johnson com fila de prioridades mínimas\cite{cormen3ndjohnson}, Johnson com array\cite{cormen3ndjohnson} e Breadth First Search\cite{cormen3ndbfs}.
+apresentam as análises dos algoritmos que calculam a centralidade utilizando, respectivamente, os algoritmos: Faster-All-Pairs-Shortest-Path\cite{cormen3ndFaster}, Floyd-Warshall\cite{cormen3ndFloydwarshall}, Johnson com fila de prioridade mínima\cite{cormen3ndjohnson}, Johnson com array\cite{cormen3ndjohnson} e Breadth First Search\cite{cormen3ndbfs}.
 
 \begin{algorithm}
 \Entrada{Grafo $G = (V, E)$ e número $k$ de comunidades}
@@ -39,7 +38,7 @@ de dados grafo.
 
 \subsection{Johnson com Fila de Prioridades Mínimas}\label{sec:johnson_queue}
 O cálculo de centralidades é feito utilizando o algoritmo de Johnson que utiliza o algoritmo de Dijkstra\cite{cormen3nddijkstra} com fila
-de prioridade mínima. Nesse caso o Algoritmo de Johnson que utiliza o algoritmo de Dijkstra com fila de prioridades mínima
+de prioridade mínima. Nesse caso o Algoritmo de Johnson que utiliza o algoritmo de Dijkstra com fila de prioridade mínima
 possui ordem de complexidade igual a $O(nmlog_2n)$. No melhor caso apenas $k$ arestas serão retiradas do grafo e no pior
 caso $m$ arestas serão retiradas do grafo. Assim o algoritmo de cálculo de comunidades utilizando o algoritmo de Johnson terá ordem de complexidade igual a $O(knmlog_2n)$ no melhor caso e $O(nm^2log_2n)$ no pior caso. A quantidade
 de memória utilizada por esse algoritmo será da ordem de $\theta(n^2)$, que é a ordem de utilização de memória dado pela estrutura
@@ -52,7 +51,7 @@ de dados grafo.
 
 \subsection{Breadth First Search}\label{sec:bfs}
 O cálculo de centralidades é feito utilizando o algoritmo Breadth First Search (BFS). O Algoritmo BFS
-possui ordem de complexidade igual a $O(n + m)$. No cálculo de centralidade utilizando o algoritmo BFS
+possui ordem de complexidade igual a $O(n + m)$. No cálculo de centralidade utilizando o algoritmo BFS, 
 para cada vértice $v \in V$ é executado o algoritmo BFS. No melhor caso apenas $k$ arestas serão retiradas do grafo e no pior
 caso $m$ arestas serão retiradas do grafo. Assim o algoritmo de cálculo de comunidades utilizando o algoritmo BFS terá ordem de complexidade igual a $O(k(n^2 + nm))$ no melhor caso e $O(mn^2 + nm^2))$ no pior caso. A quantidade
 de memória utilizada por esse algoritmo será da ordem de $\theta(n^2)$, que é a ordem de utilização de memória dado pela estrutura
