@@ -9,5 +9,5 @@
 #include "algorithms/NBreadthFirstSearch/bfs.h"
 #include "constant.h"
 #include <stdio.h>
-
+void imprime(int *, int, int);
 #endif
